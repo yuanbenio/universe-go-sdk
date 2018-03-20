@@ -5,15 +5,11 @@ import (
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/primasio/go-base36"
-	"fmt"
 )
 
 // GenPrivKeySecp256k1
 func GenPrivKeySecp256k1() (string, string) {
 	p, _ := crypto.GenerateKey()
-	e := crypto.FromECDSA(p)
-	fmt.Print(e)
-
 	return hex.EncodeToString(crypto.FromECDSA(p)), hex.EncodeToString(crypto.CompressPubkey(&p.PublicKey))
 }
 
