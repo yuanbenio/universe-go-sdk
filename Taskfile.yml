@@ -1,0 +1,27 @@
+default:
+  desc: 帮助文件
+  cmds:
+    - task -l
+
+deps:
+  desc: 下载依赖包
+  dir: src/vendor
+  cmds:
+    - which gopm || go get -u github.com/gpmgo/gopm
+    - ../../scripts/deps.sh
+
+build:
+  desc: 编译应用
+  cmds:
+    - GOPATH=`pwd` GOBIN=`pwd` go install src/project/main/test.go
+
+dev:
+  desc: 运行应用
+  cmds:
+    - ./main --home kdata node
+
+build_linux:
+  desc: 交叉编译成linux应用
+  cmds:
+    - GOPATH=`pwd` GOBIN=`pwd` CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build src/p/cmd/main.go
+
