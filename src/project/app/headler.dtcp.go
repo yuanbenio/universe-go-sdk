@@ -11,6 +11,7 @@ import (
 	uts "project/utils"
 	"strings"
 	"time"
+	"encoding/json"
 )
 
 //GenContentHash
@@ -24,8 +25,8 @@ func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) 
 		return "", errors.New("There must be a private key and license")
 	}
 	prvBs, _ := hex.DecodeString(private_key)
-	conBs, _ := hex.DecodeString(md.ContentHash)
-	h := crypto.Keccak256([]byte(md.Title), conBs, md.DumpsLicense())
+	j,_ := json.Marshal(md)
+	h := crypto.Keccak256(j)
 	if signBs, err := uts.Sign(h, prvBs); err != nil {
 		return "", err
 	} else {

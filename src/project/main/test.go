@@ -9,6 +9,7 @@ import (
 	uts "project/utils"
 	"encoding/json"
 	"net/http"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 var url = "http://119.23.22.129:9000"
@@ -103,8 +104,74 @@ func test5 (){
 	uts.GenPrivKeySecp256k1()
 }
 
+func test6 () {
+	privKey := "af7a3e2004b35f73e9bada891563d6522847b98e0edf7c12af6f40bf859da24c"
+	pubKey := "0264d6d0b926a6382eb227f7b233bdaa98c4b51998322831cf197f3ebe760e096b"
+
+	content := "有关所有现有选项的参考，其描述和默认值，可以参考默认配置ethereumj.conf（可以在库jar或源树中找到它ethereum-core/src/main/resources）。要覆盖需要的选项，可以使用以下方法之一："
+	contentHash := "58449825e30c3c9865321d21912818ea25e879dfedefa0461518eb0c82bb6059"
+	sign_msg := "010147bc3a3b896aeb9be06456e1a1f6dac582f242b97318ff12df607d8b2ce97f60728a18a6be7e3bd6f5faf53724aa9511fa1f7bfa6b6544dd489f2c7b764700"
+
+	pi1 ,_:= hex.DecodeString(privKey)
+	pp1 := uts.GetPubKeyFromPri(pi1)
+	if pp1 == pubKey {
+		fmt.Println("公钥推导成功")
+	}else {
+		fmt.Println("公钥推导失败")
+	}
+
+
+	h1 := []byte(content)
+	h2 := uts.Hasher(h1)
+	if h2 == contentHash {
+		fmt.Println("keccak256计算成功")
+	}else {
+		fmt.Println("keccak256计算失败")
+	}
+
+
+	h3,_ :=hex.DecodeString(h2)
+	sBs,_ := uts.Sign(h3,pi1)
+	if hex.EncodeToString(sBs) == sign_msg {
+		fmt.Println("sign success")
+	}else {
+		fmt.Println("sign fail")
+	}
+
+
+
+	h4,_ := hex.DecodeString(contentHash)
+	s1,_ := hex.DecodeString(sign_msg)
+
+
+	pp2,_ := hex.DecodeString(pubKey)
+
+
+	if crypto.VerifySignature(pp2, h4, s1[:len(s1)-1]) {
+		fmt.Println("verify success")
+	}else {
+		fmt.Println("verify fail")
+	}
+
+
+}
+
+func test7 (){
+	md := &kts.Metadata{
+		Abstract:"sagdsfg",
+		License: struct {
+			Type   string`json:"type,omitempty" binding:"required"`
+			Params map[string]string`json:"params,omitempty" binding:"required"`
+		}{Type: "cc", Params: map[string]string{"data":"afgad","cata":"afgad","adta":"afgad"}},
+		DNA:"afsdfdfa",
+	}
+	bs,_:=json.Marshal(md)
+	fmt.Println(string(bs))
+
+}
+
 func main() {
 
-	test5()
+	test1()
 }
 
