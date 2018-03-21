@@ -18,6 +18,7 @@ type Metadata struct {
 	Created  string      `json:"created,omitempty"`
 	Abstract string      `json:"abstract,omitempty"`
 	DNA      string      `json:"dna,omitempty"`
+	ParentDna string     `json:"parent_dna,omitempty"`
 	Language string      `json:"language,omitempty"`
 	Source   string      `json:"source,omitempty"`
 	Extra    interface{} `json:"extra,omitempty"`
@@ -37,3 +38,23 @@ func (a *Metadata) DumpsLicense() []byte {
 	d, _ := json.Marshal(a.License)
 	return d
 }
+
+func (a *Metadata) DumpsRmSignSort() []byte {
+	//remove signature attribute
+	sign := a.Signature
+	dna := a.DNA
+	a.Signature = ""
+	a.DNA = ""
+	//struct -- > json
+	js,_ := json.Marshal(a)
+	//json -- > map
+	var re map[string]interface{}
+	json.Unmarshal(js,&re)
+	//map --> json
+	js,_ = json.Marshal(re)
+
+	a.DNA = dna
+	a.Signature = sign
+	return js
+}
+

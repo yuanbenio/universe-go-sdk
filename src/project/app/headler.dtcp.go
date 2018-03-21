@@ -11,7 +11,6 @@ import (
 	uts "project/utils"
 	"strings"
 	"time"
-	"encoding/json"
 )
 
 //GenContentHash
@@ -22,39 +21,37 @@ func GenContentHash(content string) string {
 //GenMetadataSignature
 func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) {
 	if private_key == "" || md == nil {
-		return "", errors.New("There must be a private key and license")
+		return "", errors.New("there must be a private key and license")
 	}
 	prvBs, _ := hex.DecodeString(private_key)
-	j,_ := json.Marshal(md)
-	h := crypto.Keccak256(j)
+	//j,_ := json.Marshal(md)
+
+	h := crypto.Keccak256(md.DumpsRmSignSort())
 	if signBs, err := uts.Sign(h, prvBs); err != nil {
 		return "", err
 	} else {
 		return hex.EncodeToString(signBs), nil
 	}
-
 }
 
 func VerifySignature(md *kts.Metadata) (bool, error) {
 	if md == nil || md.PubKey == "" {
 		return false, errors.New("public key is empty or metadata is nil")
 	}
-	conBs, _ := hex.DecodeString(md.ContentHash)
-	h := crypto.Keccak256([]byte(md.Title), conBs, md.DumpsLicense())
-
+	//conBs, _ := hex.DecodeString(md.ContentHash)
+	//h := crypto.Keccak256([]byte(md.Title), conBs, md.DumpsLicense())
+	h := crypto.Keccak256(md.DumpsRmSignSort())
 	if signBs, err := hex.DecodeString(md.Signature); err != nil {
 		return false, err
 	} else {
 		d1, _ := hex.DecodeString(md.PubKey)
-
 		return crypto.VerifySignature(d1, h, signBs[:len(signBs)-1]), nil // remove recovery id
 	}
-
 }
 
 //GenerateDNA
-func GenerateDNA(metadataSignature string) string {
-	return uts.GenerateDNA(metadataSignature)
+func GenerateDNA(md_sign string,block_hash string) string {
+	return uts.GenerateDNA(md_sign,block_hash)
 }
 
 //GenerateMetadataFromContent
@@ -63,7 +60,10 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		return errors.New("metadata is nil")
 	}
 	if md.Content == "" {
-		return errors.New("metadata content is null")
+		return errors.New("metadata content is empty")
+	}
+	if md.BlockHash == "" {
+		return errors.New("block hash is empty")
 	}
 	if md.ContentHash == "" {
 		contentHash := GenContentHash(md.Content)
@@ -78,22 +78,15 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		md.Title = md.Type
 	}
 	if private_key == "" {
-		return errors.New("There must be a private key")
+		return errors.New("there must be a private key")
 	}
-	signature, err := GenMetadataSignature(private_key, md)
+
 	if err != nil {
 		return err
 	}
 
-	if md.DNA == "" {
-		md.DNA = GenerateDNA(signature)
-	}
 	if md.ID == "" {
 		md.ID = strings.Replace(uuid.Must(uuid.NewV4()).String(), "-", "", -1)
-	}
-
-	if md.Signature == "" {
-		md.Signature = signature
 	}
 
 	if md.Type == "" {
@@ -104,9 +97,8 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		md.Language = "zh-cn"
 	}
 
-	if md.Created == "" {
-		md.Created = fmt.Sprintf("%d", time.Now().Unix())
-	}
+	md.Created = fmt.Sprintf("%d", time.Now().Unix())
+
 	switch md.Type {
 
 	case "article":
@@ -131,12 +123,20 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 	case "image", "video", "audio":
 		//todo : 添加图片的处理
 		if md.ContentHash == "" {
-			return errors.New("There must be a contentHash if the content type is image、video or audio")
+			return errors.New("there must be a contentHash if the content type is image、video or audio")
 		}
 
 	default:
 		return errors.New("content type is nonsupport")
 	}
+	signature, err := GenMetadataSignature(private_key, md)
+	if md.Signature == "" {
+		md.Signature = signature
+	}
+	if md.DNA == "" {
+		md.DNA = GenerateDNA(signature,md.BlockHash)
+	}
+
 	return nil
 
 }

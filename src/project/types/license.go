@@ -23,8 +23,14 @@ type License struct {
 }
 
 func (a *License) Dumps() []byte {
-	d, _ := json.Marshal(a)
-	return d
+	//struct -- > json
+	js,_ := json.Marshal(a)
+	//json -- > map
+	var re map[string]interface{}
+	json.Unmarshal(js,&re)
+	//map --> json
+	js,_ = json.Marshal(re)
+	return js
 }
 func (li *License) validate_params() error {
 	if li == nil {

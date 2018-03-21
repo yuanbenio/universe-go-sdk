@@ -35,6 +35,7 @@ func test1() {
 	priBs, _ := hex.DecodeString(priKey)
 
 	md := &kts.Metadata{
+		BlockHash: "afsf",
 		Content: content,
 		Type:    "article",
 		PubKey:  uts.GetPubKeyFromPri(priBs),
@@ -59,12 +60,12 @@ func test1() {
 
 
 	//metadata post test
-	res := app.Metadata_post(url,"",md)
-	if r,err := json.Marshal(res); err != nil {
-		fmt.Println(err.Error())
-	}else {
-		fmt.Println(string(r))
-	}
+	//res := app.Metadata_post(url,"",md)
+	//if r,err := json.Marshal(res); err != nil {
+	//	fmt.Println(err.Error())
+	//}else {
+	//	fmt.Println(string(r))
+	//}
 
 
 
@@ -162,11 +163,16 @@ func test7 (){
 		License: struct {
 			Type   string`json:"type,omitempty" binding:"required"`
 			Params map[string]string`json:"params,omitempty" binding:"required"`
-		}{Type: "cc", Params: map[string]string{"data":"afgad","cata":"afgad","adta":"afgad"}},
+		}{Type: "cc", Params: map[string]string{"data":"afgad","cata":"afgad","adta":"afgad","bcdta":"afgad"}},
 		DNA:"afsdfdfa",
 	}
 	bs,_:=json.Marshal(md)
 	fmt.Println(string(bs))
+
+
+}
+
+func test8 () {
 
 }
 
