@@ -27,6 +27,7 @@ func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) 
 	//j,_ := json.Marshal(md)
 
 	h := crypto.Keccak256(md.DumpsRmSignSort())
+	fmt.Println(hex.EncodeToString(h))
 	if signBs, err := uts.Sign(h, prvBs); err != nil {
 		return "", err
 	} else {
@@ -38,8 +39,6 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 	if md == nil || md.PubKey == "" {
 		return false, errors.New("public key is empty or metadata is nil")
 	}
-	//conBs, _ := hex.DecodeString(md.ContentHash)
-	//h := crypto.Keccak256([]byte(md.Title), conBs, md.DumpsLicense())
 	h := crypto.Keccak256(md.DumpsRmSignSort())
 	if signBs, err := hex.DecodeString(md.Signature); err != nil {
 		return false, err
@@ -50,8 +49,8 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 }
 
 //GenerateDNA
-func GenerateDNA(md_sign string,block_hash string) string {
-	return uts.GenerateDNA(md_sign,block_hash)
+func GenerateDNA(md_sign string) string {
+	return uts.GenerateDNA(md_sign)
 }
 
 //GenerateMetadataFromContent
@@ -75,14 +74,10 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		md.PubKey = uts.GetPubKeyFromPri(priBs)
 	}
 	if md.Title == "" {
-		md.Title = md.Type
+		return errors.New("title is empty")
 	}
 	if private_key == "" {
 		return errors.New("there must be a private key")
-	}
-
-	if err != nil {
-		return err
 	}
 
 	if md.ID == "" {
@@ -90,7 +85,7 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 	}
 
 	if md.Type == "" {
-		md.Type = "article"
+		return errors.New("type is empty")
 	}
 
 	if md.Language == "" {
@@ -130,11 +125,14 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		return errors.New("content type is nonsupport")
 	}
 	signature, err := GenMetadataSignature(private_key, md)
+	if err != nil {
+		return err
+	}
 	if md.Signature == "" {
 		md.Signature = signature
 	}
 	if md.DNA == "" {
-		md.DNA = GenerateDNA(signature,md.BlockHash)
+		md.DNA = GenerateDNA(signature)
 	}
 
 	return nil

@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 type Metadata struct {
 	PubKey      string `json:"pubkey,omitempty"`
 	BlockHash   string `json:"block_hash,omitempty"`
@@ -25,7 +27,7 @@ type Metadata struct {
 	Data     interface{} `json:"data,omitempty"`
 	License  struct {
 		Type   string            `json:"type,omitempty" binding:"required"`
-		Params map[string]string `json:"params,omitempty" binding:"required"`
+		Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
 	} `json:"license,omitempty" binding:"required"`
 }
 
@@ -45,6 +47,7 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	dna := a.DNA
 	a.Signature = ""
 	a.DNA = ""
+	a.Content = ""
 	//struct -- > json
 	js,_ := json.Marshal(a)
 	//json -- > map
@@ -55,6 +58,7 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 
 	a.DNA = dna
 	a.Signature = sign
+	fmt.Println(string(js))
 	return js
 }
 

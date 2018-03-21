@@ -45,7 +45,7 @@ func Metadata_post(url string, version string, md *kts.Metadata) (res *kts.Metad
 			Msg:  "metadata signature is empty",
 		}
 	}
-	if md.License.Type == "" || md.License.Params == nil{
+	if md.License.Type == "" || md.License.Parameters == nil{
 		return &kts.MetadataPostResp{
 			Code: "error",
 			Msg:  "metadata license is empty",

@@ -54,9 +54,8 @@ func Hasher(data ...[]byte) string {
 }
 
 // GenerateDNA
-func GenerateDNA(md_sign string,block_hash string) string {
+func GenerateDNA(md_sign string) string {
 	d, _ := hex.DecodeString(md_sign)
-	bh, _ := hex.DecodeString(block_hash)
-	digest := base36.EncodeBytes(crypto.Keccak256(d,bh))
+	digest := base36.EncodeBytes(crypto.Keccak256(d))
 	return digest
 }

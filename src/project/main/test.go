@@ -26,7 +26,7 @@ func test1() {
 	priKey := "b133fb0fa361a292d37df2f5ac13ea64ba734a6c6319f03ded565bff0dd2c6c3"
 
 	var content string
-	if conBs, err := ioutil.ReadFile("test1"); err != nil {
+	if conBs, err := ioutil.ReadFile("test2"); err != nil {
 		panic(err)
 	} else {
 		content = string(conBs)
@@ -37,12 +37,13 @@ func test1() {
 	md := &kts.Metadata{
 		BlockHash: "afsf",
 		Content: content,
+		Title: "dsfdf",
 		Type:    "article",
 		PubKey:  uts.GetPubKeyFromPri(priBs),
 		License: struct {
 			Type   string `json:"type,omitempty" binding:"required"`
-			Params map[string]string `json:"params,omitempty" binding:"required"`
-		}{Type: "cc", Params: map[string]string{
+			Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
+		}{Type: "cc", Parameters: map[string]string{
 			"y":"4",
 			"b":"2",
 		}},
@@ -57,6 +58,12 @@ func test1() {
 	} else {
 		fmt.Println("验证结果", isPass)
 	}
+
+
+	//fmt.Println(md.DumpsRmSignSort())
+	fmt.Println(string(md.Dumps()))
+
+
 
 
 	//metadata post test
@@ -162,8 +169,8 @@ func test7 (){
 		Abstract:"sagdsfg",
 		License: struct {
 			Type   string`json:"type,omitempty" binding:"required"`
-			Params map[string]string`json:"params,omitempty" binding:"required"`
-		}{Type: "cc", Params: map[string]string{"data":"afgad","cata":"afgad","adta":"afgad","bcdta":"afgad"}},
+			Parameters map[string]string`json:"parameters,omitempty" binding:"required"`
+		}{Type: "cc", Parameters: map[string]string{"data":"afgad","cata":"afgad","adta":"afgad","bcdta":"afgad"}},
 		DNA:"afsdfdfa",
 	}
 	bs,_:=json.Marshal(md)
