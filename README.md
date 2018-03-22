@@ -29,7 +29,8 @@ task deps
 
 ## API说明文档
 这个版本的SDK用来给go语言开发者提供便捷生成metadata的服务。
-**NOTE** 原本链中所有字节数组都以16进制都字符串存储，公钥为压缩格式。
+
+**NOTE** 原本链中所有字节数组都以16进制的字符串存储，公钥为压缩格式。
 
 ### 服务方法分布
     go-sdk提供三个文件用来生成metadata相关参数：app/headler.key.go、app/headler.dtcp.go、app/headler.node.go
