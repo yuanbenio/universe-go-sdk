@@ -8,6 +8,4 @@ deps:
   dir: src/vendor
   cmds:
     - which gopm || go get -u github.com/gpmgo/gopm
-    - ../../scripts/deps.sh
-
-
+    - scripts/deps.sh
