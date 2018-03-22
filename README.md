@@ -29,6 +29,7 @@ task deps
 
 ## API说明文档
 这个版本的SDK用来给go语言开发者提供便捷生成metadata的服务。
+
 git路径：https://git.dev.yuanben.org/scm/unv/universe-go-sdk.git
 
 **NOTE** 原本链中所有字节数组都以16进制的字符串存储，公钥为压缩格式。
