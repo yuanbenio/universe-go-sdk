@@ -17,13 +17,13 @@ type MetadataPostResp struct {
 type MetadataGetResp struct {
 	Code string      `json:"code,omitempty"`
 	Msg  string      `json:"msg,omitempty"`
-	Data interface{} `json:"data,omitempty"`
+	Data Metadata    `json:"data,omitempty"`
 	Tx   Transaction `json:"tx,omitempty"`
 }
 type LicenseGetResp struct {
 	Code string  `json:"code,omitempty"`
 	Msg  string  `json:"msg,omitempty"`
-	Data License `json:"data,omitempty"`
+	Data map[string]interface{} `json:"data,omitempty"`
 }
 
 type LicensePostResp struct {

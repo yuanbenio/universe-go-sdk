@@ -7,10 +7,10 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/satori/go.uuid"
 	"github.com/yanyiwu/gojieba"
-	uts "universe-go-sdk/utils"
-	kts "universe-go-sdk/types"
-	"time"
 	"strings"
+	"time"
+	kts "universe-go-sdk/types"
+	uts "universe-go-sdk/utils"
 )
 
 //GenContentHash
@@ -61,6 +61,9 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 	}
 	if md.BlockHash == "" {
 		return errors.New("block hash is empty")
+	}
+	if &md.License == nil || md.License.Type == "" {
+		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
 		contentHash := GenContentHash(md.Content)
@@ -132,6 +135,8 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 	if md.DNA == "" {
 		md.DNA = GenerateDNA(signature)
 	}
+	//node节点不需要content
+	md.Content = ""
 
 	return nil
 

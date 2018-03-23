@@ -43,6 +43,7 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	//remove signature attribute
 	sign := a.Signature
 	dna := a.DNA
+	content := a.Content
 	a.Signature = ""
 	a.DNA = ""
 	a.Content = ""
@@ -54,6 +55,7 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	//map --> json
 	js, _ = json.Marshal(re)
 
+	a.Content = content
 	a.DNA = dna
 	a.Signature = sign
 	return js
