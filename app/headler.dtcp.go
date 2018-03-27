@@ -13,12 +13,16 @@ import (
 	uts "universe-go-sdk/utils"
 )
 
-//GenContentHash
+//GenContentHash : generate content_hash
+//params:content
+//return:hexadecimal keccak(content)
 func GenContentHash(content string) string {
 	return uts.Hasher([]byte(content))
 }
 
-//GenMetadataSignature
+//GenMetadataSignature : calculation metadata.Signature
+//params:hexadecimal private_key and metadata
+//return: hexadecimal signature
 func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) {
 	if private_key == "" || md == nil {
 		return "", errors.New("there must be a private key and license")
@@ -33,6 +37,9 @@ func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) 
 	}
 }
 
+//VerifySignature : verify metadata`s signature
+//params : metadata
+//result : verify result
 func VerifySignature(md *kts.Metadata) (bool, error) {
 	if md == nil || md.PubKey == "" {
 		return false, errors.New("public key is empty or metadata is nil")
@@ -46,18 +53,19 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 	}
 }
 
-//GenerateDNA
+//GenerateDNA : generate metadata`s lightning dna
+//params : metadata`s signature
+//result : base36 decimal string
 func GenerateDNA(md_sign string) string {
 	return uts.GenerateDNA(md_sign)
 }
 
-//GenerateMetadataFromContent
-func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err error) {
+//FullMetadata : full the metadata
+//params : hexadecimal private key and metadata (metadata must include:title|block_hash|license,if no content_hash ,there must be a content)
+//result : full metadata
+func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	if md == nil {
 		return errors.New("metadata is nil")
-	}
-	if md.Content == "" {
-		return errors.New("metadata content is empty")
 	}
 	if md.BlockHash == "" {
 		return errors.New("block hash is empty")
@@ -66,6 +74,9 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
+		if md.Content == "" {
+			return errors.New("metadata content is empty")
+		}
 		contentHash := GenContentHash(md.Content)
 		md.ContentHash = contentHash
 	}

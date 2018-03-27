@@ -125,7 +125,7 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 		return false, err
 	} else {
 		d1, _ := hex.DecodeString(md.PubKey)
-		return crypto.VerifySignature(d1, h, signBs[:len(signBs)-1]), nil
+		return crypto.VerifySignature(d1, h, signBs[:len(signBs)-1]), nil 
 	}
 }
 
@@ -145,14 +145,14 @@ func GenerateDNA(md_sign string) string {
 // 该方法位于headler.dtcp.go,需要传入metadata的签名，输出metadata的DNA。
 ```
 
-### GenerateMetadataFromContent
+### FullMetadata
 > 对metadata进行信息补全。
 
-**NOTE** metadata中Content、BlockHash、Type、Title、License为必填字段，该方法会对这些值做非空判断。
+**NOTE** metadata中BlockHash、Type、Title、License为必填字段，如果contentHash为空，则content的值不能为空；如果类型不是article，则需要传入contentHash的值，该方法会对这些属性做非空判断。
 
 ```golang
-//GenerateMetadataFromContent
-func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err error) {
+//FullMetadata
+func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	......
 }
 
@@ -162,11 +162,11 @@ func GenerateMetadataFromContent(private_key string, md *kts.Metadata) (err erro
 
 ```
 
-### Metadata_get
+### QueryMetadata
 > 通过DNA向node节点查询metadata
 
 ```golang
-func Metadata_get(url string, version string, dna string) (res *kts.MetadataGetResp) {
+func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQueryResp) {
 	......
 }
 
@@ -174,25 +174,45 @@ func Metadata_get(url string, version string, dna string) (res *kts.MetadataGetR
 
 ```
 
-### Metadata_post
+### SaveMetadata
 > 向node节点提交metadata，请求注册
 
 ```golang
-func Metadata_post(url string, version string, md *kts.Metadata) (res *kts.MetadataPostResp){
+func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.MetadataSaveResp){
 	......
 }
 
 // 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)以及metadata。该方法会返回在原本链上注册的metadata的DNA，code为error表示错误。
 ```
 
-### License_get
+### QueryLicense
 > 根据license的type向node节点查询license
 
 ```golang
-func License_get(url string, version string, license_type string) (res *kts.LicenseGetResp) {
+func QueryLicense(url string, version string, license_type string) (res *kts.LicenseQueryResp) {
 	......
 }
 // 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)以及license_type。该方法会返回对应的license信息，code为error表示错误。
 ```
 
-**NOTE** 方法的测试用例请查看test包下的源码
+### QueryLatestBlockHash
+> 向node节点查询最新的blockHash
+
+```golang
+func QueryLatestBlockHash(url string,version string) (res *kts.BlockHashQueryResp) {
+	......
+}
+// 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)。该方法会返回原本链最新的区块hash，code为error表示错误。
+```
+
+### CheckBlockHash
+> 向node节点查询blockHash是否在链上，并且高度正确
+
+```golang
+func CheckBlockHash(url string,version string,req *kts.BlockHashCheckReq) (res *kts.BlockHashCheckResp) {
+	......
+}
+// 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)以及要检查的blockHash和blockHeight。该方法会返回bool类型的查询结果(BlockHashCheckResp.Data)，code为error表示错误。
+```
+
+**NOTE** 方法的使用请查看test包下的[样例](https://git.dev.yuanben.org/projects/UNV/repos/universe-go-sdk/browse/test)

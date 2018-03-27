@@ -1,12 +1,6 @@
 package types
 
-type BaseResponse struct {
-	Code string `json:"code,omitempty"`
-	Err  error  `json:"err,omitempty"`
-	Msg  string `json:"msg,omitempty"`
-}
-
-type MetadataPostResp struct {
+type MetadataSaveResp struct {
 	Code string `json:"code,omitempty"`
 	Msg  string `json:"msg,omitempty"`
 	Data struct {
@@ -14,19 +8,51 @@ type MetadataPostResp struct {
 	} `json:"data,omitempty" binding:"required"`
 }
 
-type MetadataGetResp struct {
+type MetadataQueryResp struct {
 	Code string      `json:"code,omitempty"`
 	Msg  string      `json:"msg,omitempty"`
 	Data Metadata    `json:"data,omitempty"`
 	Tx   Transaction `json:"tx,omitempty"`
 }
-type LicenseGetResp struct {
-	Code string  `json:"code,omitempty"`
-	Msg  string  `json:"msg,omitempty"`
+type LicenseQueryResp struct {
+	Code string                 `json:"code,omitempty"`
+	Msg  string                 `json:"msg,omitempty"`
 	Data map[string]interface{} `json:"data,omitempty"`
+	Tx   Transaction            `json:"tx,omitempty"`
 }
 
-type LicensePostResp struct {
+type Transaction struct {
+	BlockHash   string `json:"block_hash,omitempty"`
+	BlockHeight int64  `json:"block_height,omitempty"`
+	DataHeight  int64  `json:"data_height,omitempty"`
+	Sender      string `json:"sender,omitempty"`
+	Time        int64  `json:"time,omitempty"`
+}
+
+func (t *Transaction) Dumps() []byte {
+	d, _ := json.Marshal(t)
+	return d
+}
+
+type BlockHashQueryResp struct {
+	Code string                 `json:"code,omitempty"`
+	Msg  string                 `json:"msg,omitempty"`
+	Data BlockHashResp `json:"data,omitempty"`
+}
+type BlockHashResp struct{
+	LatestBlockHash string `json:"latest_block_hash,omitempty"`
+	LatestBlockHeight int64 `json:"latest_block_height,omitempty"`
+	LatestBlockTime string  `json:"latest_block_time,omitempty"`
+}
+
+
+type BlockHashCheckResp struct {
 	Code string `json:"code,omitempty"`
-	Msg  string `json:"msg,omitempty"`
+	Msg  string                 `json:"msg,omitempty"`
+	Data bool `json:"data,omitempty"`
+}
+
+type BlockHashCheckReq struct {
+	Hash string `json:"hash,omitempty"`
+	Height  int64                 `json:"height,omitempty"`
 }
