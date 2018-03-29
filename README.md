@@ -52,6 +52,31 @@ https://git.dev.yuanben.org/scm/unv/universe-go-sdk.git
     这个文件主要提供对node节点进行请求对方法，开发者可以通过这个文件中的方法来访问node接口。
 ```
 
+
+### metadata介绍
+
+| name           | type    | comment                                  |source|
+| -------------- | ------- | ---------------------------------------- |------|
+| type           | string  | 类型, image(图片类型),article(文档类型) , others(其他类型) |用户传入|
+| language       | string  | 语言 'zh-CN',                              |默认zh-cn,可用户传入|
+| title          | string  | 内容标题                                       |用户传入|
+| signature      | string  | 内容签名, 算法(secp256k1)                      |系统生成|
+| abstract       | string  | 描述,内容摘要                                       |用户传入，为空时，系统自动取内容的前200个字符|
+| category       | string  | 分类集, 以逗号分隔 "新闻, 商业"                      |用户传入，如果有传入content，则系统会追加五个|
+| dna            | string  | metadata dna                             |系统生成|
+| parent_dna            | string  | 该metadata修改前的dna                             |用户传入，如果时修改前一个metadata的数据，则需要传入前一个metadata的dna|
+| block_hash            | string  | 区块链上的一个block_hash值                             |用户传入，会到链上做校验|
+| block_height            | long  | block_hash对应的区块的height值                             |用户传入，会到链上做校验|
+| created        | integer | 创建的时间,时间戳,10位长度, 1506302092               |系统生成|
+| content_hash   | string  | 内容哈希,hash算法(keccak256)                   |可用户传入，如果没有，系统根据content生成|
+| extra          | object  | 扩展内容,自定义内容                               |用户传入|
+| license        | object  | 许可证                                      |用户传入|
+| license.type   | string  | 许可证类型                                    |用户传入|
+| license.parameters | object  | 许可证参数对象,自定义内容                            |用户传入|
+| source         | string  | 原内容的链接, article,image的官网或者内容的连接                |用户传入|
+| data           | object  | 根据type存放相关的article，image的下面定义的内容           |用户传入|
+
+
 ### GenPrivKeySecp256k1
 > 生成公私密钥对
 
