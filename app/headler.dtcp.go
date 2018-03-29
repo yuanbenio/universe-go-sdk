@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"github.com/yanyiwu/gojieba"
 	"strings"
 	"time"
@@ -13,16 +13,16 @@ import (
 	uts "universe-go-sdk/utils"
 )
 
-//GenContentHash : generate content_hash
-//params:content
-//return:hexadecimal keccak(content)
+// GenContentHash : generate content_hash
+// params:content
+// return:hexadecimal keccak(content)
 func GenContentHash(content string) string {
 	return uts.Hasher([]byte(content))
 }
 
-//GenMetadataSignature : calculation metadata.Signature
-//params:hexadecimal private_key and metadata
-//return: hexadecimal signature
+// GenMetadataSignature : calculation metadata.Signature
+// params:hexadecimal private_key and metadata
+// return: hexadecimal signature
 func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) {
 	if private_key == "" || md == nil {
 		return "", errors.New("there must be a private key and license")
@@ -37,9 +37,9 @@ func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) 
 	}
 }
 
-//VerifySignature : verify metadata`s signature
-//params : metadata
-//result : verify result
+// VerifySignature : verify metadata`s signature
+// params : metadata
+// result : verify result
 func VerifySignature(md *kts.Metadata) (bool, error) {
 	if md == nil || md.PubKey == "" {
 		return false, errors.New("public key is empty or metadata is nil")
@@ -53,16 +53,16 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 	}
 }
 
-//GenerateDNA : generate metadata`s lightning dna
-//params : metadata`s signature
-//result : base36 decimal string
+// GenerateDNA : generate metadata`s lightning dna
+// params : metadata`s signature
+// result : base36 decimal string
 func GenerateDNA(md_sign string) string {
 	return uts.GenerateDNA(md_sign)
 }
 
-//FullMetadata : full the metadata
-//params : hexadecimal private key and metadata (metadata must include:title|block_hash|license,if no content_hash ,there must be a content)
-//result : full metadata
+// FullMetadata : full the metadata
+// params : hexadecimal private key and metadata (metadata must include:title|block_hash|license,if no content_hash ,there must be a content)
+// result : full metadata
 func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	if md == nil {
 		return errors.New("metadata is nil")
@@ -93,7 +93,7 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	}
 
 	if md.ID == "" {
-		md.ID = strings.Replace(uuid.Must(uuid.NewV4()).String(), "-", "", -1)
+		md.ID = strings.Replace(uuid.NewV4().String(), "-", "", -1)
 	}
 
 	if md.Type == "" {
@@ -129,7 +129,7 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 			md.Category = strings.Join(_j, ",")
 		}
 	case "image", "video", "audio":
-		//todo : 添加图片的处理
+		// todo : 添加图片的处理
 		if md.ContentHash == "" {
 			return errors.New("there must be a contentHash if the content type is image、video or audio")
 		}
@@ -147,7 +147,7 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	if md.DNA == "" {
 		md.DNA = GenerateDNA(signature)
 	}
-	//node节点不需要content
+	// node节点不需要content
 	md.Content = ""
 
 	return nil

@@ -23,7 +23,7 @@ type Metadata struct {
 	Source    string      `json:"source,omitempty"`
 	Extra     interface{} `json:"extra,omitempty"`
 	Data      interface{} `json:"data,omitempty"`
-	License   struct {
+	License struct {
 		Type       string            `json:"type,omitempty" binding:"required"`
 		Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
 	} `json:"license,omitempty" binding:"required"`
@@ -40,19 +40,19 @@ func (a *Metadata) DumpsLicense() []byte {
 }
 
 func (a *Metadata) DumpsRmSignSort() []byte {
-	//remove signature attribute
+	// remove signature attribute
 	sign := a.Signature
 	dna := a.DNA
 	content := a.Content
 	a.Signature = ""
 	a.DNA = ""
 	a.Content = ""
-	//struct -- > json
+	// struct -- > json
 	js, _ := json.Marshal(a)
-	//json -- > map
+	// json -- > map
 	var re map[string]interface{}
 	json.Unmarshal(js, &re)
-	//map --> json
+	// map --> json
 	js, _ = json.Marshal(re)
 
 	a.Content = content
