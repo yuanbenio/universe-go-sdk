@@ -50,7 +50,7 @@ func SaveMetadataTest() {
 	pri_key := "50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade"
 	app.FullMetadata(pri_key, md)
 
-	res := app.SaveMetadata(node_url, "", md)
+	res := app.SaveMetadata(node_url, "",true, md)
 	if res.Code == "error" {
 		fmt.Println("metadata post error : ", res.Msg)
 	} else {

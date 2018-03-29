@@ -203,11 +203,12 @@ func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQue
 > 向node节点提交metadata，请求注册
 
 ```golang
-func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.MetadataSaveResp){
+func SaveMetadata(url string, version string, async bool, md *kts.Metadata) (res *kts.MetadataSaveResp){
 	......
 }
 
-// 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)以及metadata。该方法会返回在原本链上注册的metadata的DNA，code为error表示错误。
+// 该方法位于headler.node.go,需要传入node节点的url、node节点的版本（不传默认为v1)、async以及metadata。该方法会返回在原本链上注册的metadata的DNA，code为error表示错误。
+// async=true为异步发送,如果async=false为同步发送，选择异步发送node节点会将请求存储队列。
 ```
 
 ### QueryLicense

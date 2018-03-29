@@ -30,7 +30,7 @@ func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQue
 
 //SaveMetadata : register metadata on yuanben chain node
 // return:MetadataSaveResp.Code == "error" representative save failure
-func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.MetadataSaveResp) {
+func SaveMetadata(url string, version string,async bool, md *kts.Metadata) (res *kts.MetadataSaveResp) {
 	if md == nil {
 		return &kts.MetadataSaveResp{
 			Code: "error",
@@ -55,7 +55,7 @@ func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.Metada
 		version = "v1"
 	}
 	_d, _ := json.Marshal(md)
-	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata", url, version), "application/json", bytes.NewBuffer(_d)); err != nil {
+	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata?async=%s", url, version,async), "application/json", bytes.NewBuffer(_d)); err != nil {
 		res = &kts.MetadataSaveResp{
 			Code: "error",
 			Msg:  err.Error(),
