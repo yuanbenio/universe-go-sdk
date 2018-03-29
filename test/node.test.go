@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	node_url = "http://119.23.22.129:9000"
+	//node_url = "http://119.23.22.129:9000"
+	node_url = "http://127.0.0.1:9000"
 )
 
 //test result
@@ -97,5 +98,5 @@ func CheckBlockHashTest () {
 }
 
 func main() {
-	CheckBlockHashTest()
+	SaveMetadataTest()
 }
