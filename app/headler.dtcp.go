@@ -118,15 +118,16 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 				md.Abstract = strings.Join(_s, "")
 			}
 		}
+		if md.Content != "" {
+			x := gojieba.NewJieba()
+			defer x.Free()
 
-		x := gojieba.NewJieba()
-		defer x.Free()
-
-		_j := x.Extract(md.Content, 5)
-		if md.Category != "" {
-			_j = append(_j, md.Category)
+			_j := x.Extract(md.Content, 5)
+			if md.Category != "" {
+				_j = append(_j, md.Category)
+			}
+			md.Category = strings.Join(_j, ",")
 		}
-		md.Category = strings.Join(_j, ",")
 	case "image", "video", "audio":
 		//todo : 添加图片的处理
 		if md.ContentHash == "" {
