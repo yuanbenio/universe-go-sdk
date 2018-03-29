@@ -35,24 +35,23 @@ func (t *Transaction) Dumps() []byte {
 }
 
 type BlockHashQueryResp struct {
-	Code string                 `json:"code,omitempty"`
-	Msg  string                 `json:"msg,omitempty"`
+	Code string        `json:"code,omitempty"`
+	Msg  string        `json:"msg,omitempty"`
 	Data BlockHashResp `json:"data,omitempty"`
 }
-type BlockHashResp struct{
-	LatestBlockHash string `json:"latest_block_hash,omitempty"`
-	LatestBlockHeight int64 `json:"latest_block_height,omitempty"`
-	LatestBlockTime string  `json:"latest_block_time,omitempty"`
+type BlockHashResp struct {
+	LatestBlockHash   string `json:"latest_block_hash,omitempty"`
+	LatestBlockHeight int64  `json:"latest_block_height,omitempty"`
+	LatestBlockTime   string `json:"latest_block_time,omitempty"`
 }
-
 
 type BlockHashCheckResp struct {
 	Code string `json:"code,omitempty"`
-	Msg  string                 `json:"msg,omitempty"`
-	Data bool `json:"data,omitempty"`
+	Msg  string `json:"msg,omitempty"`
+	Data bool   `json:"data,omitempty"`
 }
 
 type BlockHashCheckReq struct {
-	Hash string `json:"hash,omitempty"`
-	Height  int64                 `json:"height,omitempty"`
+	Hash   string `json:"hash,omitempty"`
+	Height int64  `json:"height,omitempty"`
 }
