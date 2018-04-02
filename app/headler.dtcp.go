@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
 	uuid "github.com/satori/go.uuid"
-	"github.com/yanyiwu/gojieba"
 	"strings"
 	"time"
 	kts "universe-go-sdk/types"
@@ -118,15 +117,8 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 				md.Abstract = strings.Join(_s, "")
 			}
 		}
-		if md.Content != "" {
-			x := gojieba.NewJieba()
-			defer x.Free()
-
-			_j := x.Extract(md.Content, 5)
-			if md.Category != "" {
-				_j = append(_j, md.Category)
-			}
-			md.Category = strings.Join(_j, ",")
+		if md.Category == "" {
+			md.Category = "压力测试"
 		}
 	case "image", "video", "audio":
 		// todo : 添加图片的处理

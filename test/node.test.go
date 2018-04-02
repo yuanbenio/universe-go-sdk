@@ -5,11 +5,13 @@ import (
 	"universe-go-sdk/app"
 	kts "universe-go-sdk/types"
 	"encoding/json"
+	_"time"
+	"strconv"
 )
 
 var (
-	//node_url = "http://119.23.22.129:9000"
-	node_url = "http://127.0.0.1:9000"
+	node_url = "http://119.23.22.129:8080"
+	//node_url = "http://127.0.0.1:9000"
 )
 
 //test result
@@ -50,7 +52,7 @@ func SaveMetadataTest() {
 	pri_key := "50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade"
 	app.FullMetadata(pri_key, md)
 
-	res := app.SaveMetadata(node_url, "",true, md)
+	res := app.SaveMetadata(node_url, "","true", md)
 	if res.Code == "error" {
 		fmt.Println("metadata post error : ", res.Msg)
 	} else {
@@ -78,6 +80,8 @@ func QueryLastedBlockHashTest () {
 		fmt.Println("query error : ", res.Msg)
 	} else {
 		js, _ := json.Marshal(res)
+		fmt.Println(res.Data.LatestBlockHeight)
+		fmt.Println(strconv.FormatInt(int64(res.Data.LatestBlockHeight), 10))
 		fmt.Println("success~ blockhHash: ", string(js))
 	}
 }
@@ -98,5 +102,10 @@ func CheckBlockHashTest () {
 }
 
 func main() {
-	SaveMetadataTest()
+	//ip := "123"
+	//d := "asd"
+
+	//QueryLastedBlockHashTest()
+	//fmt.Println(fmt.Sprintf("ip:%s :success~ dna : %s",ip,d))
+	//fmt.Println(rand.Intn(9))
 }

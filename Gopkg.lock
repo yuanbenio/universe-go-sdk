@@ -85,12 +85,6 @@
   revision = "24da7009c3d8c019b40ba4287495749e3160caca"
   version = "v0.7.1"
 
-[[projects]]
-  name = "github.com/yanyiwu/gojieba"
-  packages = ["."]
-  revision = "6e14c5c21cec8e7b26f319f3bcc3dddffacc703a"
-  version = "v1.0.0"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1

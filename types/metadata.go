@@ -3,7 +3,7 @@ package types
 type Metadata struct {
 	PubKey      string `json:"pubkey,omitempty"`
 	BlockHash   string `json:"block_hash,omitempty"`
-	BlockHeight int64  `json:"block_height,omitempty"`
+	BlockHeight string  `json:"block_height,omitempty"`
 	Signature   string `json:"signature,omitempty"`
 	ID          string `json:"id,omitempty"`
 
