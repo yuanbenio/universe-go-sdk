@@ -10,8 +10,7 @@ import (
 )
 
 var (
-	node_url = "http://119.23.22.129:8080"
-	//node_url = "http://127.0.0.1:9000"
+	node_url = "https://api.yuanbenlian.com"
 )
 
 //test result
@@ -80,8 +79,6 @@ func QueryLastedBlockHashTest () {
 		fmt.Println("query error : ", res.Msg)
 	} else {
 		js, _ := json.Marshal(res)
-		fmt.Println(res.Data.LatestBlockHeight)
-		fmt.Println(strconv.FormatInt(int64(res.Data.LatestBlockHeight), 10))
 		fmt.Println("success~ blockhHash: ", string(js))
 	}
 }
@@ -104,7 +101,6 @@ func CheckBlockHashTest () {
 func main() {
 	//ip := "123"
 	//d := "asd"
-
 	//QueryLastedBlockHashTest()
 	//fmt.Println(fmt.Sprintf("ip:%s :success~ dna : %s",ip,d))
 	//fmt.Println(rand.Intn(9))
