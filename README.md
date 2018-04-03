@@ -25,6 +25,4 @@ task deps
 4. Goland作为开发工具配置
 请把当前目录`pwd`配置为`Project GOPATH`
 
-项目已迁移到：https://github.com/yuanbenio/universe-go-sdk
-
 详情请阅读[API说明文档](http://yuanbenlian.mydoc.io/docs/api.md?t=268053)
