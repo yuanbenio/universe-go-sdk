@@ -27,7 +27,7 @@ type Metadata struct {
 	Data      map[string]interface{} `json:"data,omitempty"`
 	License   struct {
 		Type       string            `json:"type,omitempty" binding:"required"`
-		Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
+		Parameters map[string]string `json:"parameters,omitempty"`
 	} `json:"license,omitempty" binding:"required"`
 }
 
