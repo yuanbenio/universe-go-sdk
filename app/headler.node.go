@@ -30,7 +30,7 @@ func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQue
 
 //SaveMetadata : register metadata on yuanben chain node
 // return:MetadataSaveResp.Code == "error" representative save failure
-func SaveMetadata(url string, version string,async string, md *kts.Metadata) (res *kts.MetadataSaveResp) {
+func SaveMetadata(url string, version string, async string, md *kts.Metadata) (res *kts.MetadataSaveResp) {
 	if md == nil {
 		return &kts.MetadataSaveResp{
 			Code: "error",
@@ -55,7 +55,7 @@ func SaveMetadata(url string, version string,async string, md *kts.Metadata) (re
 		version = "v1"
 	}
 	_d, _ := json.Marshal(md)
-	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata?async=%s", url, version,string(async)), "application/json", bytes.NewBuffer(_d)); err != nil {
+	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata?async=%s", url, version, string(async)), "application/json", bytes.NewBuffer(_d)); err != nil {
 		res = &kts.MetadataSaveResp{
 			Code: "error",
 			Msg:  err.Error(),
@@ -90,10 +90,9 @@ func QueryLicense(url string, version string, license_type string) (res *kts.Lic
 	return
 }
 
-
 //QueryLatestBlockHash : query the lasted block hash on the yuaben chain
 //return:BlockHashQueryResp.Code == "error" representative query failure
-func QueryLatestBlockHash(url string,version string) (res *kts.BlockHashQueryResp) {
+func QueryLatestBlockHash(url string, version string) (res *kts.BlockHashQueryResp) {
 	if version == "" {
 		version = "v1"
 	}
@@ -114,7 +113,7 @@ func QueryLatestBlockHash(url string,version string) (res *kts.BlockHashQueryRes
 //CheckBlockHash : check whether blcokHash is on the yuanben chain
 //return:BlockHashCheckResp.Code == "error" representative check failure
 //check result:BlockHashCheckResp.Data
-func CheckBlockHash(url string,version string,req *kts.BlockHashCheckReq) (res *kts.BlockHashCheckResp) {
+func CheckBlockHash(url string, version string, req *kts.BlockHashCheckReq) (res *kts.BlockHashCheckResp) {
 	if version == "" {
 		version = "v1"
 	}
@@ -139,5 +138,3 @@ func CheckBlockHash(url string,version string,req *kts.BlockHashCheckReq) (res *
 	}
 	return
 }
-
-

@@ -5,7 +5,7 @@ default:
 
 deps:
   desc: 下载依赖包
-  dir: src/vendor
+  dir: vendor
   cmds:
     - which gopm || go get -u github.com/gpmgo/gopm
     - scripts/deps.sh

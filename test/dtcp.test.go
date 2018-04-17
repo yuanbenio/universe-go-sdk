@@ -1,11 +1,8 @@
 package main
 
 import (
-	"encoding/hex"
-	_ "encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/crypto"
 	"universe-go-sdk/app"
 	kts "universe-go-sdk/types"
 )
@@ -117,34 +114,12 @@ func main() {
 		PubKey: "03d75b59a801f6db4bbb501ff8b88743902aa83a3e54237edcd532716fd27dea77",
 		Title:  "原本链java版本sdk测试",
 		Type:   "article",
-		//Signature:"ffd1515581f7962444291faf67f27f3ef13b9401f52ba076f2cd5b25f88341a923492d08b82cf7b6801c5d8e840bc771d960e74bde50c79387e151f8f86079b601",
-		Signature: "ffd1515581f7962444291faf67f27f3ef13b9401f52ba076f2cd5b25f88341a923492d08b82cf7b6801c5d8e840bc771d960e74bde50c79387e151f8f86079b601",
-		DNA:       "65SO0BNCXRLWIEIKVFSZAAL8WG2964P91N3S29T8HS3YP1RQ67",
 	}
 
-	fmt.Println("signature from md:", md.Signature)
+	app.FullMetadata(pri_key, md)
 
-	sign, _ := app.GenMetadataSignature("3c4dbee4485557edce3c8878be34373c1a41d955f38d977cfba373642983ce4c", md)
-	fmt.Println("gen signature from md:", sign)
-
-	s, _ := hex.DecodeString(sign)
-	pub, _ := crypto.Ecrecover(crypto.Keccak256(md.DumpsRmSignSort()), s)
-	fmt.Println("pubkey :", hex.EncodeToString(pub))
-
-	v, _ := app.VerifySignature(md)
-	fmt.Println("verify :", v)
-
-	dna := app.GenerateDNA(md.Signature)
-	fmt.Println("dna from md sign:", dna)
-
-	dna = app.GenerateDNA(sign)
-	fmt.Println("dna from gen sign :", dna)
-
-	dna = app.GenerateDNA("ffd1515581f7962444291faf67f27f3ef13b9401f52ba076f2cd5b25f88341a923492d08b82cf7b6801c5d8e840bc771d960e74bde50c79387e151f8f86079b600")
-	fmt.Println("dna from java sign :", dna)
-
-	fmt.Println("dna :", md.DNA)
-
+	jBs, _ := json.Marshal(md)
+	fmt.Println(string(jBs))
 	//res := app.Metadata_save("http://119.23.22.129:9000", "", md)
 	//if res.Code == "error" {
 	//	fmt.Println("metadata post error : ", res.Msg)

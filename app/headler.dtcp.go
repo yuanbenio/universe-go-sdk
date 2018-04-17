@@ -121,7 +121,6 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 			md.Category = "压力测试"
 		}
 	case "image", "video", "audio":
-		// todo : 添加图片的处理
 		if md.ContentHash == "" {
 			return errors.New("there must be a contentHash if the content type is image、video or audio")
 		}

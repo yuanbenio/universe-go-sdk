@@ -1,9 +1,11 @@
 package types
 
+import "fmt"
+
 type Metadata struct {
 	PubKey      string `json:"pubkey,omitempty"`
 	BlockHash   string `json:"block_hash,omitempty"`
-	BlockHeight string  `json:"block_height,omitempty"`
+	BlockHeight string `json:"block_height,omitempty"`
 	Signature   string `json:"signature,omitempty"`
 	ID          string `json:"id,omitempty"`
 
@@ -15,15 +17,15 @@ type Metadata struct {
 	Content     string `json:"content,omitempty" binding:"required"`
 
 	// 时间戳
-	Created   string      `json:"created,omitempty"`
-	Abstract  string      `json:"abstract,omitempty"`
-	DNA       string      `json:"dna,omitempty"`
-	ParentDna string      `json:"parent_dna,omitempty"`
-	Language  string      `json:"language,omitempty"`
-	Source    string      `json:"source,omitempty"`
-	Extra     interface{} `json:"extra,omitempty"`
-	Data      interface{} `json:"data,omitempty"`
-	License struct {
+	Created   string                 `json:"created,omitempty"`
+	Abstract  string                 `json:"abstract,omitempty"`
+	DNA       string                 `json:"dna,omitempty"`
+	ParentDna string                 `json:"parent_dna,omitempty"`
+	Language  string                 `json:"language,omitempty"`
+	Source    string                 `json:"source,omitempty"`
+	Extra     map[string]interface{} `json:"extra,omitempty"`
+	Data      map[string]interface{} `json:"data,omitempty"`
+	License   struct {
 		Type       string            `json:"type,omitempty" binding:"required"`
 		Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
 	} `json:"license,omitempty" binding:"required"`
@@ -58,5 +60,6 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	a.Content = content
 	a.DNA = dna
 	a.Signature = sign
+	fmt.Println(string(js))
 	return js
 }
