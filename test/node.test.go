@@ -40,7 +40,7 @@ func SaveMetadataTest() {
 		Title:     "原本链go版本sdk测试",
 		License: struct {
 			Type       string            `json:"type,omitempty" binding:"required"`
-			Parameters map[string]string `json:"parameters,omitempty" binding:"required"`
+			Parameters map[string]string `json:"parameters,omitempty"`
 		}{Type: "cc", Parameters: map[string]string{
 			"y": "4",
 			"b": "2",

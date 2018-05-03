@@ -109,16 +109,13 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 
 	case "article":
 
-		if md.Abstract == "" {
+		if md.Abstract == "" && md.Content != ""{
 			_s := strings.Split(md.Content, "")
 			if len(_s) > 200 {
 				md.Abstract = strings.Join(_s[:200], "")
 			} else {
 				md.Abstract = strings.Join(_s, "")
 			}
-		}
-		if md.Category == "" {
-			md.Category = "压力测试"
 		}
 	case "image", "video", "audio":
 		if md.ContentHash == "" {
@@ -128,6 +125,10 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	default:
 		return errors.New("content type is nonsupport")
 	}
+	if md.Category == "" {
+		return errors.New("category can't be  empty !")
+	}
+
 	signature, err := GenMetadataSignature(private_key, md)
 	if err != nil {
 		return err
