@@ -22,6 +22,7 @@ func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQue
 		}
 	} else {
 		d, _ := ioutil.ReadAll(resp.Body)
+		resp.Body.Close()
 		res = &kts.MetadataQueryResp{}
 		json.Unmarshal(d, res)
 	}
@@ -62,7 +63,7 @@ func SaveMetadata(url string, version string, async string, md *kts.Metadata) (r
 		}
 	} else {
 		d, _ := ioutil.ReadAll(resp.Body)
-
+		resp.Body.Close()
 		res = &kts.MetadataSaveResp{}
 		json.Unmarshal(d, res)
 	}
@@ -83,7 +84,7 @@ func QueryLicense(url string, version string, license_type string) (res *kts.Lic
 		}
 	} else {
 		d, _ := ioutil.ReadAll(resp.Body)
-
+		resp.Body.Close()
 		res = &kts.LicenseQueryResp{}
 		json.Unmarshal(d, res)
 	}
@@ -103,7 +104,7 @@ func QueryLatestBlockHash(url string, version string) (res *kts.BlockHashQueryRe
 		}
 	} else {
 		d, _ := ioutil.ReadAll(resp.Body)
-
+		resp.Body.Close()
 		res = &kts.BlockHashQueryResp{}
 		json.Unmarshal(d, res)
 	}
@@ -132,7 +133,7 @@ func CheckBlockHash(url string, version string, req *kts.BlockHashCheckReq) (res
 		}
 	} else {
 		d, _ := ioutil.ReadAll(resp.Body)
-
+		resp.Body.Close()
 		res = &kts.BlockHashCheckResp{}
 		json.Unmarshal(d, res)
 	}
