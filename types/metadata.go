@@ -23,8 +23,8 @@ type Metadata struct {
 	ParentDna string                 `json:"parent_dna,omitempty"`
 	Language  string                 `json:"language,omitempty"`
 	Source    string                 `json:"source,omitempty"`
-	Extra     map[string]interface{} `json:"extra,omitempty"`
-	Data      map[string]interface{} `json:"data,omitempty"`
+	Extra     map[string]string `json:"extra,omitempty"`
+	Data      map[string]string `json:"data,omitempty"`
 	License   struct {
 		Type       string            `json:"type,omitempty" binding:"required"`
 		Parameters map[string]string `json:"parameters,omitempty"`
