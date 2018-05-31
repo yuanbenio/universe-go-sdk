@@ -5,11 +5,14 @@ import (
 	"fmt"
 	"universe-go-sdk/app"
 	kts "universe-go-sdk/types"
+	"encoding/hex"
+	"universe-go-sdk/utils/base36"
+	"strings"
+	"time"
 )
 
 var (
-	node_url = "https://openapi.yuanbenlian.com"
-	//node_url = "http://127.0.0.1:9000"
+	node_url = "https://testnet.yuanbenlian.com"
 )
 
 //test result

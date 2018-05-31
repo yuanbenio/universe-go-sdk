@@ -4,6 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"universe-go-sdk/app"
+	"os"
+	"bufio"
 )
 
 //test result:
@@ -32,6 +34,18 @@ func Sign_test() {
 	}
 }
 
-func main() {
-	GenPrivKeySecp256k1_test()
+
+func gen() {
+	f,_:= os.Create("acc.txt")
+	//f,_ := os.Open("acc.txt")
+	w := bufio.NewWriter(f)
+	for i:=0;i<100;i++ {
+		pri, pub := app.GenPrivKeySecp256k1()
+		w.WriteString(fmt.Sprint(pub,":",pri))
+		w.WriteString("\n")
+	}
+	w.Flush()
+	f.Close()
+
 }
+

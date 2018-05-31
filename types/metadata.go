@@ -1,7 +1,5 @@
 package types
 
-import "fmt"
-
 type Metadata struct {
 	PubKey      string `json:"pubkey,omitempty"`
 	BlockHash   string `json:"block_hash,omitempty"`
@@ -46,6 +44,7 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	sign := a.Signature
 	dna := a.DNA
 	content := a.Content
+
 	a.Signature = ""
 	a.DNA = ""
 	a.Content = ""
@@ -60,6 +59,5 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	a.Content = content
 	a.DNA = dna
 	a.Signature = sign
-	fmt.Println(string(js))
 	return js
 }
