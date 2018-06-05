@@ -1,24 +1,23 @@
-package main
+package app_test
 
 import (
 	"encoding/hex"
 	"fmt"
+	"testing"
 	"universe-go-sdk/app"
-	"os"
-	"bufio"
 )
 
 //test result:
 //private_key:50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade
 //public_key:02e70aebdffd7b8f7495f35b504f0f3053024e44a87b8c419f7d886659e1475e19
-func GenPrivKeySecp256k1_test() {
+func TestGenPrivKeySecp256k1(t *testing.T) {
 	pri, pub := app.GenPrivKeySecp256k1()
 	fmt.Println(fmt.Sprintf("private_key:%s\n public_key:%s", pri, pub))
 }
 
 //test result:
 // sign success, signature： 9c8dec698554008b1be8204f616240ab0ab71a79cec743153abe3f394e06364d5ef027766ae17f72a56036cc05b065174c742703b6f094751e6f55d7de55476100
-func Sign_test() {
+func TestSign(t *testing.T) {
 	content := "原本链是一个分布式的底层数据网络；" +
 		"原本链是一个高效的，安全的，易用的，易扩展的，全球性质的，企业级的可信联盟链；" +
 		"原本链通过智能合约系统以及数字加密算法，实现了链上数据可持续性交互以及数据传输的安全；" +
@@ -32,20 +31,5 @@ func Sign_test() {
 	} else {
 		fmt.Println("sign success, signature：", hex.EncodeToString(signBs))
 	}
-}
-
-
-func gen() {
-	f,_:= os.Create("acc.txt")
-	//f,_ := os.Open("acc.txt")
-	w := bufio.NewWriter(f)
-	for i:=0;i<100;i++ {
-		pri, pub := app.GenPrivKeySecp256k1()
-		w.WriteString(fmt.Sprint(pub,":",pri))
-		w.WriteString("\n")
-	}
-	w.Flush()
-	f.Close()
-
 }
 
