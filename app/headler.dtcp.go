@@ -100,7 +100,7 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	}
 
 	if md.Language == "" {
-		md.Language = "zh-cn"
+		md.Language = "zh-CN"
 	}
 
 	md.Created = fmt.Sprintf("%d", time.Now().Unix())
