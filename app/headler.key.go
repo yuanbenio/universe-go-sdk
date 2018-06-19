@@ -1,7 +1,7 @@
 package app
 
 import (
-	uts "universe-go-sdk/utils"
+	uts "github.com/yuanbenio/universe-go-sdk/utils"
 )
 
 // GenPrivKeySecp256k1 : generate secret key by secp256k1

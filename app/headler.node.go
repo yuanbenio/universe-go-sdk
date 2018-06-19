@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	kts "universe-go-sdk/types"
+	kts "github.com/yuanbenio/universe-go-sdk/types"
 )
 
 //QueryMetadata : query metadata by metadata`s dna on yuanben chain

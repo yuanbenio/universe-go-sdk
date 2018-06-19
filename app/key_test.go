@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"testing"
-	"universe-go-sdk/app"
+	"github.com/yuanbenio/universe-go-sdk/app"
 )
 
 //test result:

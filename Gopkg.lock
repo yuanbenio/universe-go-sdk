@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/btcsuite/btcd"
   packages = ["btcec"]
-  revision = "2be2f12b358dc57d70b8f501b00be450192efbc3"
+  revision = "86fed781132ac890ee03e906e4ecd5d6fa180c64"
 
 [[projects]]
   name = "github.com/ethereum/go-ethereum"
@@ -18,8 +18,8 @@
     "crypto/sha3",
     "rlp"
   ]
-  revision = "329ac18ef617d0238f71637bffe78f028b0f13f7"
-  version = "v1.8.3"
+  revision = "dea1ce052a10cd7d401a5c04f83f371a06fe293c"
+  version = "v1.8.11"
 
 [[projects]]
   name = "github.com/go-kit/kit"
@@ -74,12 +74,6 @@
   version = "v0.8.0"
 
 [[projects]]
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
-  version = "v1.2.0"
-
-[[projects]]
   name = "github.com/tendermint/tmlibs"
   packages = ["log"]
   revision = "24da7009c3d8c019b40ba4287495749e3160caca"
@@ -88,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d23637ae96529bf434c50b22478c1d1e52a28e45ebf0b9639868ea7901d38b14"
+  inputs-digest = "325f3c69842029265616b6cf9438cbc7d53ae3db8d609b4ccf9f924e88c22c4a"
   solver-name = "gps-cdcl"
   solver-version = 1

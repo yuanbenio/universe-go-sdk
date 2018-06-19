@@ -4,7 +4,7 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/crypto"
-	"universe-go-sdk/utils/base36"
+	"github.com/yuanbenio/universe-go-sdk/utils/base36"
 )
 
 // GenPrivKeySecp256k1

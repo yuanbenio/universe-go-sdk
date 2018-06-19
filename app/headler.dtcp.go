@@ -5,11 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
-	uuid "github.com/satori/go.uuid"
 	"strings"
 	"time"
-	kts "universe-go-sdk/types"
-	uts "universe-go-sdk/utils"
+	kts "github.com/yuanbenio/universe-go-sdk/types"
+	uts "github.com/yuanbenio/universe-go-sdk/utils"
 )
 
 // GenContentHash : generate content_hash
@@ -89,10 +88,6 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	}
 	if private_key == "" {
 		return errors.New("there must be a private key")
-	}
-
-	if md.ID == "" {
-		md.ID = strings.Replace(uuid.NewV4().String(), "-", "", -1)
 	}
 
 	if md.Type == "" {

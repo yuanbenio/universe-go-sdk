@@ -3,8 +3,8 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
-	"universe-go-sdk/app"
-	kts "universe-go-sdk/types"
+	"github.com/yuanbenio/universe-go-sdk/app"
+	kts "github.com/yuanbenio/universe-go-sdk/types"
 	"testing"
 )
 
