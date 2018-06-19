@@ -19,13 +19,13 @@ func GenContentHash(content string) string {
 }
 
 // GenMetadataSignature : calculation metadata.Signature
-// params:hexadecimal private_key and metadata
+// params:hexadecimal privateKey and metadata
 // return: hexadecimal signature
-func GenMetadataSignature(private_key string, md *kts.Metadata) (string, error) {
-	if private_key == "" || md == nil {
+func GenMetadataSignature(privateKey string, md *kts.Metadata) (string, error) {
+	if privateKey == "" || md == nil {
 		return "", errors.New("there must be a private key and license")
 	}
-	prvBs, _ := hex.DecodeString(private_key)
+	prvBs, _ := hex.DecodeString(privateKey)
 
 	h := crypto.Keccak256(md.DumpsRmSignSort())
 	if signBs, err := uts.Sign(h, prvBs); err != nil {
@@ -54,39 +54,36 @@ func VerifySignature(md *kts.Metadata) (bool, error) {
 // GenerateDNA : generate metadata`s lightning dna
 // params : metadata`s signature
 // result : base36 decimal string
-func GenerateDNA(md_sign string) string {
-	return uts.GenerateDNA(md_sign)
+func GenerateDNA(mdSign string) string {
+	return uts.GenerateDNA(mdSign)
 }
 
 // FullMetadata : full the metadata
-// params : hexadecimal private key and metadata (metadata must include:title|block_hash|license,if no content_hash ,there must be a content)
+// params : hexadecimal private key and metadata
 // result : full metadata
-func FullMetadata(private_key string, md *kts.Metadata) (err error) {
+func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	if md == nil {
 		return errors.New("metadata is nil")
 	}
 	if md.BlockHash == "" {
 		return errors.New("block hash is empty")
 	}
-	if &md.License == nil || md.License.Type == "" {
+	if md.License.Type == "" || (md.License.Type !="none" && md.License.Parameters == nil) {
 		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
 		if md.Content == "" {
-			return errors.New("metadata content is empty")
+			return errors.New("metadata contentHash is empty")
 		}
 		contentHash := GenContentHash(md.Content)
 		md.ContentHash = contentHash
 	}
 
 	if md.PubKey == "" {
-		priBs, _ := hex.DecodeString(private_key)
+		priBs, _ := hex.DecodeString(privateKey)
 		md.PubKey = uts.GetPubKeyFromPri(priBs)
 	}
-	if md.Title == "" {
-		return errors.New("title is empty")
-	}
-	if private_key == "" {
+	if privateKey == "" {
 		return errors.New("there must be a private key")
 	}
 
@@ -101,9 +98,9 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	md.Created = fmt.Sprintf("%d", time.Now().Unix())
 
 	switch md.Type {
-
-	case "article":
-
+	case (kts.PRIVATE).Value():
+		//pass
+	case kts.ARTICLE.Value():
 		if md.Abstract == "" && md.Content != ""{
 			_s := strings.Split(md.Content, "")
 			if len(_s) > 200 {
@@ -112,19 +109,23 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 				md.Abstract = strings.Join(_s, "")
 			}
 		}
-	case "image", "video", "audio":
-		if md.ContentHash == "" {
-			return errors.New("there must be a contentHash if the content type is image、video or audio")
+	case kts.IMAGE.Value(), kts.VIDEO.Value(), kts.AUDIO.Value():
+		if md.Data == nil {
+			return errors.New("Please add extends  data!")
 		}
-
 	default:
 		return errors.New("content type is nonsupport")
 	}
-	if md.Category == "" {
-		return errors.New("category can't be  empty !")
+	if md.Type != kts.PRIVATE.Value() {
+		if md.Title == "" {
+			return errors.New("title is empty")
+		}
+		if md.Category == "" {
+			return errors.New("category can't be  empty !")
+		}
 	}
 
-	signature, err := GenMetadataSignature(private_key, md)
+	signature, err := GenMetadataSignature(privateKey, md)
 	if err != nil {
 		return err
 	}
@@ -134,9 +135,6 @@ func FullMetadata(private_key string, md *kts.Metadata) (err error) {
 	if md.DNA == "" {
 		md.DNA = GenerateDNA(signature)
 	}
-	// node节点不需要content
-	md.Content = ""
-
 	return nil
 
 }

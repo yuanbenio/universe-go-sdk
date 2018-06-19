@@ -15,15 +15,15 @@ type Metadata struct {
 	Content     string `json:"content,omitempty" binding:"required"`
 
 	// 时间戳
-	Created   string                 `json:"created,omitempty"`
-	Abstract  string                 `json:"abstract,omitempty"`
-	DNA       string                 `json:"dna,omitempty"`
-	ParentDna string                 `json:"parent_dna,omitempty"`
-	Language  string                 `json:"language,omitempty"`
-	Source    string                 `json:"source,omitempty"`
+	Created   string            `json:"created,omitempty"`
+	Abstract  string            `json:"abstract,omitempty"`
+	DNA       string            `json:"dna,omitempty"`
+	ParentDna string            `json:"parent_dna,omitempty"`
+	Language  string            `json:"language,omitempty"`
+	Source    string            `json:"source,omitempty"`
 	Extra     map[string]string `json:"extra,omitempty"`
 	Data      map[string]string `json:"data,omitempty"`
-	License   struct {
+	License struct {
 		Type       string            `json:"type,omitempty" binding:"required"`
 		Parameters map[string]string `json:"parameters,omitempty"`
 	} `json:"license,omitempty" binding:"required"`
@@ -61,3 +61,17 @@ func (a *Metadata) DumpsRmSignSort() []byte {
 	a.Signature = sign
 	return js
 }
+
+type MetadataType string
+
+func (c MetadataType) Value() string {
+	return string(c)
+}
+
+const (
+	ARTICLE MetadataType = "article"
+	IMAGE   MetadataType = "image"
+	AUDIO   MetadataType = "audio"
+	VIDEO   MetadataType = "video"
+	PRIVATE MetadataType = "privare"
+)
