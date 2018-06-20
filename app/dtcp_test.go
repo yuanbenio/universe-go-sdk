@@ -25,7 +25,7 @@ var (
 //content_hash: 54ce1d0eb4759bae08f31d00095368b239af91d0dbb51f233092b65788f2a526
 func TestGenContentHash(t *testing.T) {
 	content_hash := app.GenContentHash(content)
-	fmt.Println("content_hash:", content_hash)
+	t.Logf("content_hash:%s", content_hash)
 }
 
 func GenerateMetadataFromContent() *kts.Metadata {
@@ -61,10 +61,9 @@ func TestGenerateMetadataFromContent(t *testing.T) {
 func TestGenMetadataSignature(t *testing.T) {
 	md := GenerateMetadataFromContent()
 	if sign, err := app.GenMetadataSignature(pri_key, md); err != nil {
-		fmt.Println("generator metadata signature error", err.Error())
-		panic(err)
+		t.Errorf("generator metadata signature error:%s", err.Error())
 	} else {
-		fmt.Println("success~", sign)
+		t.Logf("success~:%s", sign)
 	}
 
 }
@@ -74,10 +73,9 @@ func TestGenMetadataSignature(t *testing.T) {
 func TestVerifySignature(t *testing.T) {
 	md := GenerateMetadataFromContent()
 	if b, err := app.VerifySignature(md); err != nil {
-		fmt.Println("verify metadata signature error", err.Error())
-		panic(err)
+		t.Errorf("verify metadata signature error:%s", err.Error())
 	} else {
-		fmt.Println("success~", b)
+		t.Logf("success~:%s", b)
 	}
 }
 
@@ -85,5 +83,5 @@ func TestVerifySignature(t *testing.T) {
 //dna: 5DOH9KFV6CMSSBXY6MW703YV2Y0XD0V7HC6L45S8KYN2737A9V
 func TestGenerateDNA(t *testing.T) {
 	md_sign := "13173f52bee33add892bdf232f05d5e647fc49dd095eaed1f9de11852047d3eb267e66b4e4115691ff4f2733a2c2636731b826b7acbbdc56628927a55c83533c01"
-	fmt.Println("dna:", app.GenerateDNA(md_sign))
+	t.Logf("dna:%s", app.GenerateDNA(md_sign))
 }

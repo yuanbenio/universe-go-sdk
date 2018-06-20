@@ -2,7 +2,6 @@ package app_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/yuanbenio/universe-go-sdk/app"
 	kts "github.com/yuanbenio/universe-go-sdk/types"
 	"testing"
@@ -11,13 +10,12 @@ import (
 const node_url = "https://testnet.yuanbenlian.com"
 
 func TestQueryMetadata(t *testing.T) {
-	res := app.QueryMetadata(node_url, "", "80PJRBEAYI2IEXXZ4LZ8XE91JLCBO7OS9N1AOALABLFHJCBHG")
+	res := app.QueryMetadata(node_url, "", "XHDHVPESN9M20CIYRK5KD7V7Z36BLI4XWXOWU1B6PB9NL0O1B")
 	if res.Code == "error" {
-		fmt.Println("metadata query eror :", res.Msg)
+		t.Errorf("metadata query eror :%s", res.Msg)
 	} else {
 		js, _ := json.Marshal(res.Data)
-
-		fmt.Println(string(js))
+		t.Log(string(js))
 	}
 
 }
@@ -29,9 +27,11 @@ func TestSaveMetadata(t *testing.T) {
 			"原本链通过智能合约系统以及数字加密算法，实现了链上数据可持续性交互以及数据传输的安全；" +
 			"原本链通过高度抽象的“DTCP协议”与世界上独一无二的“原本DNA”互锁，确保链上数据100%不可篡改；" +
 			"原本链通过优化设计后的共识机制和独创的“闪电DNA”算法，已将区块写入速度提高至毫秒级别",
-		BlockHash: "4D36473D2FF1FE0772A6C0C55D7911295D8E1E27",
-		Type:      "article",
-		Title:     "原本链go版本sdk测试",
+		BlockHash:   "4D36473D2FF1FE0772A6C0C55D7911295D8E1E27",
+		BlockHeight: "12345",
+		Type:        "custom",
+		Title:       "原本链测试",
+		Category:    "测试,custom",
 		License: struct {
 			Type       string            `json:"type,omitempty" binding:"required"`
 			Parameters map[string]string `json:"parameters,omitempty"`
@@ -41,33 +41,37 @@ func TestSaveMetadata(t *testing.T) {
 		}},
 	}
 	pri_key := "50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade"
-	app.FullMetadata(pri_key, md)
+	err := app.FullMetadata(pri_key, md)
+	if err != nil {
+		t.Errorf("full metadata fail:%s", err.Error())
+		return
+	}
 
-	res := app.SaveMetadata(node_url, "", "true", md)
+	res := app.SaveMetadata(node_url, "", md)
 	if res.Code == "error" {
-		fmt.Println("metadata post error : ", res.Msg)
+		t.Errorf("metadata post error : %s", res.Msg)
 	} else {
-		fmt.Println("success~ dna: ", res.Data.Dna)
+		t.Logf("success~ dna: %s", res.Data.Dna)
 	}
 }
 
 func TestQueryLicense(t *testing.T) {
 	res := app.QueryLicense(node_url, "", "cc")
 	if res.Code == "error" {
-		fmt.Println("metadata post error : ", res.Msg)
+		t.Errorf("metadata post error : %s", res.Msg)
 	} else {
 		js, _ := json.Marshal(res)
-		fmt.Println("success~ license: ", string(js))
+		t.Logf("success~ license: %s", string(js))
 	}
 }
 
 func TestQueryLastedBlockHash(t *testing.T) {
 	res := app.QueryLatestBlockHash(node_url, "")
 	if res.Code == "error" {
-		fmt.Println("query error : ", res.Msg)
+		t.Errorf("query error : %s", res.Msg)
 	} else {
 		js, _ := json.Marshal(res)
-		fmt.Println("success~ blockhHash: ", string(js))
+		t.Logf("success~ blockhHash: %s", string(js))
 	}
 }
 
@@ -78,8 +82,8 @@ func TestCheckBlockHash(t *testing.T) {
 	}
 	res := app.CheckBlockHash(node_url, "", req)
 	if res.Code == "error" {
-		fmt.Println("check error : ", res.Msg)
+		t.Errorf("check error : %s", res.Msg)
 	} else {
-		fmt.Println("success~ check result is ", res.Data)
+		t.Logf("success~ check result is %s", res.Data)
 	}
 }

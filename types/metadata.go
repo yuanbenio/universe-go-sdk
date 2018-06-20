@@ -74,4 +74,5 @@ const (
 	AUDIO   MetadataType = "audio"
 	VIDEO   MetadataType = "video"
 	PRIVATE MetadataType = "private"
+	CUSTOM  MetadataType = "custom"
 )

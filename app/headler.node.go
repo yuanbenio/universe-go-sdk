@@ -31,7 +31,7 @@ func QueryMetadata(url string, version string, dna string) (res *kts.MetadataQue
 
 //SaveMetadata : register metadata on yuanben chain node
 // return:MetadataSaveResp.Code == "error" representative save failure
-func SaveMetadata(url string, version string, async string, md *kts.Metadata) (res *kts.MetadataSaveResp) {
+func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.MetadataSaveResp) {
 	if md == nil {
 		return &kts.MetadataSaveResp{
 			Code: "error",
@@ -45,7 +45,7 @@ func SaveMetadata(url string, version string, async string, md *kts.Metadata) (r
 			Msg:  "metadata signature is empty",
 		}
 	}
-	if md.License.Type == "" || md.License.Parameters == nil {
+	if md.License.Type == "" || (md.License.Type != "none" && md.License.Parameters == nil) {
 		return &kts.MetadataSaveResp{
 			Code: "error",
 			Msg:  "metadata license is empty",
@@ -56,7 +56,7 @@ func SaveMetadata(url string, version string, async string, md *kts.Metadata) (r
 		version = "v1"
 	}
 	_d, _ := json.Marshal(md)
-	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata?async=%s", url, version, string(async)), "application/json", bytes.NewBuffer(_d)); err != nil {
+	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata", url, version), "application/json", bytes.NewBuffer(_d)); err != nil {
 		res = &kts.MetadataSaveResp{
 			Code: "error",
 			Msg:  err.Error(),

@@ -65,15 +65,15 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	if md == nil {
 		return errors.New("metadata is nil")
 	}
-	if md.BlockHash == "" {
-		return errors.New("block hash is empty")
+	if md.BlockHash == "" || md.BlockHeight == ""{
+		return errors.New("block hash or block height is empty")
 	}
 	if md.License.Type == "" || (md.License.Type !="none" && md.License.Parameters == nil) {
 		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
 		if md.Content == "" {
-			return errors.New("metadata contentHash is empty")
+			return errors.New("content and contentHash can't be empty at the same time")
 		}
 		contentHash := GenContentHash(md.Content)
 		md.ContentHash = contentHash
@@ -98,7 +98,7 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	md.Created = fmt.Sprintf("%d", time.Now().Unix())
 
 	switch md.Type {
-	case (kts.PRIVATE).Value():
+	case kts.PRIVATE.Value(),kts.CUSTOM.Value():
 		//pass
 	case kts.ARTICLE.Value():
 		if md.Abstract == "" && md.Content != ""{

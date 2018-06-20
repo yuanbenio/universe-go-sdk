@@ -2,7 +2,6 @@ package app_test
 
 import (
 	"encoding/hex"
-	"fmt"
 	"testing"
 	"github.com/yuanbenio/universe-go-sdk/app"
 )
@@ -12,7 +11,7 @@ import (
 //public_key:02e70aebdffd7b8f7495f35b504f0f3053024e44a87b8c419f7d886659e1475e19
 func TestGenPrivKeySecp256k1(t *testing.T) {
 	pri, pub := app.GenPrivKeySecp256k1()
-	fmt.Println(fmt.Sprintf("private_key:%s\n public_key:%s", pri, pub))
+	t.Logf("private_key:%s\n public_key:%s", pri, pub)
 }
 
 //test result:
@@ -27,9 +26,9 @@ func TestSign(t *testing.T) {
 	priBs, _ := hex.DecodeString(pri_key)
 	conHash, _ := hex.DecodeString(app.GenContentHash(content))
 	if signBs, err := app.Sign(conHash, priBs); err != nil {
-		fmt.Println("sign error", err.Error())
+		t.Errorf("sign error:%s", err.Error())
 	} else {
-		fmt.Println("sign success, signature：", hex.EncodeToString(signBs))
+		t.Logf("sign success, signature：%s", hex.EncodeToString(signBs))
 	}
 }
 
