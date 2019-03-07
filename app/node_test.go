@@ -33,9 +33,9 @@ func TestSaveMetadata(t *testing.T) {
 		Title:       "原本链测试",
 		Category:    "测试,custom",
 		License: struct {
-			Type       string            `json:"type,omitempty" binding:"required"`
-			Parameters map[string]string `json:"parameters,omitempty"`
-		}{Type: "cc", Parameters: map[string]string{
+			Params map[string]string `json:"parameters,omitempty"`
+			Type   string            `json:"type,omitempty" binding:"required"`
+		}{Type: "cc", Params: map[string]string{
 			"y": "4",
 			"b": "2",
 		}},

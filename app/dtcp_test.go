@@ -3,8 +3,8 @@ package app_test
 import (
 	"encoding/json"
 	"fmt"
-	kts "github.com/yuanbenio/universe-go-sdk/types"
 	"github.com/yuanbenio/universe-go-sdk/app"
+	kts "github.com/yuanbenio/universe-go-sdk/types"
 	"testing"
 )
 
@@ -36,9 +36,9 @@ func GenerateMetadataFromContent() *kts.Metadata {
 		Type:      "article",
 		Title:     "原本链go版本sdk测试",
 		License: struct {
-			Type       string            `json:"type,omitempty" binding:"required"`
-			Parameters map[string]string `json:"parameters,omitempty"`
-		}{Type: "cc", Parameters: map[string]string{
+			Params map[string]string `json:"parameters,omitempty"`
+			Type   string            `json:"type,omitempty" binding:"required"`
+		}{Type: "cc", Params: map[string]string{
 			"y": "4",
 			"b": "2",
 		}},

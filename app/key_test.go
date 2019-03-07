@@ -2,8 +2,8 @@ package app_test
 
 import (
 	"encoding/hex"
-	"testing"
 	"github.com/yuanbenio/universe-go-sdk/app"
+	"testing"
 )
 
 //test result:
@@ -31,4 +31,3 @@ func TestSign(t *testing.T) {
 		t.Logf("sign success, signature：%s", hex.EncodeToString(signBs))
 	}
 }
-
