@@ -1,32 +1,31 @@
 package types
 
+import "encoding/json"
+
 type Metadata struct {
-	PubKey      string `json:"pubkey,omitempty"`
-	BlockHash   string `json:"block_hash,omitempty"`
-	BlockHeight string `json:"block_height,omitempty"`
-	Signature   string `json:"signature,omitempty"`
-	ID          string `json:"id,omitempty"`
-
-	// 用逗号隔开
-	Category    string `json:"category,omitempty"`
-	ContentHash string `json:"content_hash,omitempty"`
+	ContentHash string `json:"content_hash,omitempty" binding:"required"`
+	Created     string `json:"created,omitempty" binding:"required"`
+	BlockHash   string `json:"block_hash,omitempty" binding:"required"`
+	BlockHeight string `json:"block_height,omitempty"  binding:"required"`
+	Language    string `json:"language,omitempty"  binding:"required"`
+	Signature   string `json:"signature,omitempty" binding:"required"`
+	PubKey      string `json:"pubkey,omitempty" binding:"required"`
 	Type        string `json:"type,omitempty" binding:"required"`
-	Title       string `json:"title,omitempty" binding:"required"`
-	Content     string `json:"content,omitempty" binding:"required"`
-
-	// 时间戳
-	Created   string            `json:"created,omitempty"`
-	Abstract  string            `json:"abstract,omitempty"`
-	DNA       string            `json:"dna,omitempty"`
-	ParentDna string            `json:"parent_dna,omitempty"`
-	Language  string            `json:"language,omitempty"`
-	Source    string            `json:"source,omitempty"`
-	Extra     map[string]string `json:"extra,omitempty"`
-	Data      map[string]string `json:"data,omitempty"`
-	License struct {
-		Type       string            `json:"type,omitempty" binding:"required"`
-		Parameters map[string]string `json:"parameters,omitempty"`
+	License     struct {
+		Params map[string]string `json:"parameters,omitempty"`
+		Type   string            `json:"type,omitempty" binding:"required"`
 	} `json:"license,omitempty" binding:"required"`
+
+	ID        string      `json:"id,omitempty"`
+	Abstract  string      `json:"abstract,omitempty"`
+	Category  string      `json:"category,omitempty"`
+	Content   string      `json:"content,omitempty"`
+	Data      interface{} `json:"data,omitempty"`
+	DNA       string      `json:"dna,omitempty"`
+	ParentDna string      `json:"parent_dna,omitempty"`
+	Extra     interface{} `json:"extra,omitempty"`
+	Source    string      `json:"source,omitempty"`
+	Title     string      `json:"title,omitempty"`
 }
 
 func (a *Metadata) Dumps() []byte {

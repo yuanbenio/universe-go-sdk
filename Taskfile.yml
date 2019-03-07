@@ -9,3 +9,8 @@ deps:
   cmds:
     - which gopm || go get -u github.com/gpmgo/gopm
     - scripts/deps.sh
+build_linux:
+  desc: 编译linux脚本
+  cmds:
+    - docker run --rm -v {{.GOPATH}}:/go golang:latest go build -o /go/src/universe-go-sdk/main /go/src/universe-go-sdk/main.go
+    #    - GOBIN=`pwd` CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go install main.go

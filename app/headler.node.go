@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	kts "github.com/yuanbenio/universe-go-sdk/types"
 	"io/ioutil"
 	"net/http"
-	kts "github.com/yuanbenio/universe-go-sdk/types"
 )
 
 //QueryMetadata : query metadata by metadata`s dna on yuanben chain
@@ -45,7 +45,7 @@ func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.Metada
 			Msg:  "metadata signature is empty",
 		}
 	}
-	if md.License.Type == "" || (md.License.Type != "none" && md.License.Parameters == nil) {
+	if md.License.Type == "" || (md.License.Type != "none" && md.License.Params == nil) {
 		return &kts.MetadataSaveResp{
 			Code: "error",
 			Msg:  "metadata license is empty",
@@ -55,7 +55,13 @@ func SaveMetadata(url string, version string, md *kts.Metadata) (res *kts.Metada
 	if version == "" {
 		version = "v1"
 	}
-	_d, _ := json.Marshal(md)
+	_d, err := json.Marshal(md)
+	if err != nil {
+		res = &kts.MetadataSaveResp{
+			Code: "error",
+			Msg:  err.Error(),
+		}
+	}
 	if resp, err := http.Post(fmt.Sprintf("%s/%s/metadata", url, version), "application/json", bytes.NewBuffer(_d)); err != nil {
 		res = &kts.MetadataSaveResp{
 			Code: "error",

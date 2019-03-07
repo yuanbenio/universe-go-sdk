@@ -18,7 +18,7 @@ func GetPubKeyFrom(pubkey string) (*ecdsa.PublicKey, error) {
 	if d, err := hex.DecodeString(pubkey); err != nil {
 		return nil, err
 	} else {
-		return crypto.ToECDSAPub(d), nil
+		return crypto.UnmarshalPubkey(d)
 	}
 }
 
@@ -38,7 +38,10 @@ func GetPriKeyFrom(prikey string) (*ecdsa.PrivateKey, error) {
 
 // Sign
 func Sign(hash, prv []byte) (sig []byte, err error) {
-	p, _ := crypto.ToECDSA(prv)
+	p, err := crypto.ToECDSA(prv)
+	if err != nil {
+		return nil, err
+	}
 	return crypto.Sign(hash, p)
 }
 

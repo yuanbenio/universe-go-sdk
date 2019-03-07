@@ -68,7 +68,7 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	if md.BlockHash == "" || md.BlockHeight == ""{
 		return errors.New("block hash or block height is empty")
 	}
-	if md.License.Type == "" || (md.License.Type !="none" && md.License.Parameters == nil) {
+	if md.License.Type == "" || (md.License.Type !="none" && md.License.Params == nil) {
 		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
@@ -95,7 +95,9 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 		md.Language = "zh-CN"
 	}
 
-	md.Created = fmt.Sprintf("%d", time.Now().Unix())
+	if md.Created == "" {
+		md.Created = fmt.Sprintf("%d", time.Now().Unix())
+	}
 
 	switch md.Type {
 	case kts.PRIVATE.Value(),kts.CUSTOM.Value():

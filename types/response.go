@@ -1,5 +1,7 @@
 package types
 
+import "encoding/json"
+
 type MetadataSaveResp struct {
 	Code string `json:"code,omitempty"`
 	Msg  string `json:"msg,omitempty"`
