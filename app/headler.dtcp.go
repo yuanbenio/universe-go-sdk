@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
-	"strings"
-	"time"
 	kts "github.com/yuanbenio/universe-go-sdk/types"
 	uts "github.com/yuanbenio/universe-go-sdk/utils"
+	"strings"
+	"time"
 )
 
 // GenContentHash : generate content_hash
@@ -65,10 +65,10 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	if md == nil {
 		return errors.New("metadata is nil")
 	}
-	if md.BlockHash == "" || md.BlockHeight == ""{
+	if md.BlockHash == "" || md.BlockHeight == "" {
 		return errors.New("block hash or block height is empty")
 	}
-	if md.License.Type == "" || (md.License.Type !="none" && md.License.Params == nil) {
+	if md.License.Type == "" || (md.License.Type != "none" && md.License.Params == nil) {
 		return errors.New("license is nil")
 	}
 	if md.ContentHash == "" {
@@ -100,10 +100,10 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	}
 
 	switch md.Type {
-	case kts.PRIVATE.Value(),kts.CUSTOM.Value():
+	case kts.PRIVATE.Value(), kts.CUSTOM.Value():
 		//pass
 	case kts.ARTICLE.Value():
-		if md.Abstract == "" && md.Content != ""{
+		if md.Abstract == "" && md.Content != "" {
 			_s := strings.Split(md.Content, "")
 			if len(_s) > 200 {
 				md.Abstract = strings.Join(_s[:200], "")
@@ -137,6 +137,7 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 	if md.DNA == "" {
 		md.DNA = GenerateDNA(signature)
 	}
+	md.Content = ""
 	return nil
 
 }

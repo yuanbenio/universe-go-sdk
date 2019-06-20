@@ -75,7 +75,7 @@ func TestVerifySignature(t *testing.T) {
 	if b, err := app.VerifySignature(md); err != nil {
 		t.Errorf("verify metadata signature error:%s", err.Error())
 	} else {
-		t.Logf("success~:%s", b)
+		t.Logf("success~:%t", b)
 	}
 }
 
