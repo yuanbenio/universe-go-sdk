@@ -1,7 +1,10 @@
 # services
 Yuanben Chain SDK for Gopher
 
-![Yuanben chain](https://github.com/yuanbenio/universe-java-sdk/blob/master/img/yuanbenlian.png)
+![Yuanben chain](https://github.com/yuanbenio/universe-go-sdk/blob/master/img/yuanbenlian.png)
+
+## Data flow diagram
+![Data flow](https://github.com/yuanbenio/universe-go-sdk/blob/master/img/data-flow.png)
 
 ## return code
 
@@ -87,7 +90,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |privateKey | string| hex encode
 |publicKey | string | hex encode
 
---
+---
 #### Sign
 ###### Request
 |attr| type | info|
@@ -117,7 +120,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |contentHash | string |  keccak256(content)
 
 
---
+---
 #### GenMetadataSignature
 ###### Request
 |attr| type | info|
@@ -139,7 +142,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |ErrMDNil | metadata is nil|
 |others | invalid private key, sign failure|
 
---
+---
 #### VerifySignature
 ###### Request
 |attr| type | info|
@@ -160,7 +163,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |ErrMDNil | metadata is nil|
 |others | invalid signature, invalid public key|
 
---
+---
 #### GenerateDNA
 ###### Request
 |attr| type | info|
@@ -172,7 +175,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |---|---|---|
 |dna | string | matadata's dna|
 
---
+---
 #### FullMetadata
 ###### Request
 |attr| type | info|
@@ -202,7 +205,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |ErrCategoryNil | category is nil. if type is private, it allow|
 |others | invalid private key, sign failure|
 
---
+---
 #### GenRegisterAccountReq
 ###### Request
 |attr| type | info|
@@ -242,7 +245,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |---|---|---|
 |processor | NodeProcessor |node processor instance|
 
---
+---
 #### QueryMetadata
 > query the metadata by dna from Yuanben Chain node
 
@@ -263,7 +266,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |---|---|
 |ErrDNAInvalid| DNA is nil or invalid|
 
---
+---
 #### SaveMetadata
 > save metadata to Yuanben Chain node
 
@@ -287,7 +290,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |ErrLicenseNil| license is nil|
 |others | invalid metadata|
 
---
+---
 #### QueryLicense
 > query license to Yuanben Chain node
 
@@ -310,7 +313,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |---|---|
 |ErrLicenseNil| licenseType is empty|
 
---
+---
 #### QueryLatestBlockHash
 > query the lasted block information from the Yuaben Chain node
 
@@ -320,7 +323,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |res | LicenseQueryResp | response data, include error log|
 |err | error | http failure message|
 
---
+---
 #### CheckBlockHash
 > check whether block is on the Yuanben Chain
 
@@ -344,8 +347,7 @@ The Golang-SDK provides three processors: app/key.go, app/dtcp.go and app/node.g
 |ErrParameters| block hash or block height is empty|
 
 
---
-
+---
 #### RegisterAccount
 > register sub accounts to special YuanBen chain node<br>
 > For nodes that have authentication enabled, if you need to store data, you must registered
