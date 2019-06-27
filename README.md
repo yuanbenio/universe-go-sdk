@@ -34,10 +34,6 @@ Yuanben Chain SDK for Gopher
 |5000|Unknown error|
 
 
-## Data flow diagram
-![Data-flow](https://github.com/yuanbenio/universe-java-sdk/blob/master/img/data-flow.png)
-
-
 ## API Document
 
 > TestNet address: https://testnet.yuanbenlian.com
