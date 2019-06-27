@@ -28,6 +28,15 @@ type Metadata struct {
 	Title     string      `json:"title,omitempty"`
 }
 
+var (
+	NoneLicense = License{Type: "none"}
+)
+
+type License struct {
+	Params map[string]string `json:"parameters,omitempty"`
+	Type   string            `json:"type,omitempty" binding:"required"`
+}
+
 func (a *Metadata) Dumps() []byte {
 	d, _ := json.Marshal(a)
 	return d

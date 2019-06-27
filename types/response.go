@@ -2,23 +2,34 @@ package types
 
 import "encoding/json"
 
-type MetadataSaveResp struct {
+const (
+	APISuccessCode = "ok"
+)
+
+type BaseResp struct {
 	Code string `json:"code,omitempty"`
 	Msg  string `json:"msg,omitempty"`
+}
+
+func (resp *BaseResp) Success() bool {
+	return resp.Code == APISuccessCode
+}
+
+type MetadataSaveResp struct {
+	BaseResp
 	Data struct {
 		Dna string `json:"dna,omitempty" binding:"required"`
 	} `json:"data,omitempty" binding:"required"`
 }
 
 type MetadataQueryResp struct {
-	Code string      `json:"code,omitempty"`
-	Msg  string      `json:"msg,omitempty"`
+	BaseResp
 	Data Metadata    `json:"data,omitempty"`
 	Tx   Transaction `json:"tx,omitempty"`
 }
+
 type LicenseQueryResp struct {
-	Code string                 `json:"code,omitempty"`
-	Msg  string                 `json:"msg,omitempty"`
+	BaseResp
 	Data map[string]interface{} `json:"data,omitempty"`
 	Tx   Transaction            `json:"tx,omitempty"`
 }
@@ -37,10 +48,10 @@ func (t *Transaction) Dumps() []byte {
 }
 
 type BlockHashQueryResp struct {
-	Code string        `json:"code,omitempty"`
-	Msg  string        `json:"msg,omitempty"`
+	BaseResp
 	Data BlockHashResp `json:"data,omitempty"`
 }
+
 type BlockHashResp struct {
 	LatestBlockHash   string `json:"latest_block_hash,omitempty"`
 	LatestBlockHeight int64  `json:"latest_block_height,omitempty"`
@@ -48,12 +59,21 @@ type BlockHashResp struct {
 }
 
 type BlockHashCheckResp struct {
-	Code string `json:"code,omitempty"`
-	Msg  string `json:"msg,omitempty"`
-	Data bool   `json:"data,omitempty"`
+	BaseResp
+	Data bool `json:"data,omitempty"`
 }
 
 type BlockHashCheckReq struct {
 	Hash   string `json:"hash,omitempty"`
 	Height int64  `json:"height,omitempty"`
+}
+
+type RegisterAccountReq struct {
+	Signature string   `json:"signature"`
+	Pubkey    string   `json:"pubkey"`
+	Subkeys   []string `json:"subkeys"`
+}
+
+type RegisterAccountResp struct {
+	BaseResp
 }

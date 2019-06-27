@@ -7,20 +7,24 @@ import (
 	"testing"
 )
 
-const node_url = "https://testnet.yuanbenlian.com"
-
-func TestQueryMetadata(t *testing.T) {
-	res := app.QueryMetadata(node_url, "", "XHDHVPESN9M20CIYRK5KD7V7Z36BLI4XWXOWU1B6PB9NL0O1B")
-	if res.Code == "error" {
-		t.Errorf("metadata query eror :%s", res.Msg)
-	} else {
-		js, _ := json.Marshal(res.Data)
-		t.Log(string(js))
-	}
-
+func getProcessor() *app.NodeProcessor {
+	return app.InitNodeProcessor("https://testnet.yuanbenlian.com", app.DefaultChainVersion)
 }
 
-func TestSaveMetadata(t *testing.T) {
+func TestNodeProcessor_QueryMetadata(t *testing.T) {
+	res, err := getProcessor().QueryMetadata("5GIKRZ2E4Q2M9U2ZVEL3N6QK2IZKDHLAG6VAUA13ICM58TSPI3")
+	if err != nil {
+		t.Fatal(err)
+	} else {
+		if !res.Success() {
+			t.Fatal(res.Msg)
+		} else {
+			t.Log(string(res.Data.Dumps()))
+		}
+	}
+}
+
+func TestNodeProcessor_SaveMetadata(t *testing.T) {
 	md := &kts.Metadata{
 		Content: "原本链是一个分布式的底层数据网络；" +
 			"原本链是一个高效的，安全的，易用的，易扩展的，全球性质的，企业级的可信联盟链；" +
@@ -32,58 +36,103 @@ func TestSaveMetadata(t *testing.T) {
 		Type:        "custom",
 		Title:       "原本链测试",
 		Category:    "测试,custom",
-		License: struct {
-			Params map[string]string `json:"parameters,omitempty"`
-			Type   string            `json:"type,omitempty" binding:"required"`
-		}{Type: "cc", Params: map[string]string{
-			"y": "4",
-			"b": "2",
-		}},
+		License:     kts.NoneLicense,
 	}
-	pri_key := "50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade"
-	err := app.FullMetadata(pri_key, md)
+	priKey := "50ced2bc6bc71ddfa517121b9df107400c9ba866344567da6aef82fac7824ade"
+	err := app.FullMetadata(priKey, md)
 	if err != nil {
-		t.Errorf("full metadata fail:%s", err.Error())
-		return
+		t.Fatalf("full metadata fail:%s", err.Error())
+	} else {
+		res, err := getProcessor().SaveMetadata(md)
+		if err != nil {
+			t.Fatal(err)
+		} else {
+			if !res.Success() {
+				t.Fatal(res.Msg)
+			} else {
+				t.Log(res.Data.Dna)
+			}
+		}
 	}
 
-	res := app.SaveMetadata(node_url, "", md)
-	if res.Code == "error" {
-		t.Errorf("metadata post error : %s", res.Msg)
+}
+
+func TestNodeProcessor_QueryLicense(t *testing.T) {
+	res, err := getProcessor().QueryLicense("cc", "4.0")
+	if err != nil {
+		t.Fatal(err)
 	} else {
-		t.Logf("success~ dna: %s", res.Data.Dna)
+		if !res.Success() {
+			t.Fatal(res.Msg)
+		} else {
+			_d, err := json.Marshal(res.Data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Log(string(_d))
+		}
 	}
 }
 
-func TestQueryLicense(t *testing.T) {
-	res := app.QueryLicense(node_url, "", "cc")
-	if res.Code == "error" {
-		t.Errorf("metadata post error : %s", res.Msg)
+func TestNodeProcessor_QueryLatestBlockHash(t *testing.T) {
+	res, err := getProcessor().QueryLatestBlockHash()
+	if err != nil {
+		t.Fatal(err)
 	} else {
-		js, _ := json.Marshal(res)
-		t.Logf("success~ license: %s", string(js))
+		if !res.Success() {
+			t.Fatal(res.Msg)
+		} else {
+			_d, err := json.Marshal(res.Data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Log(string(_d))
+		}
 	}
 }
 
-func TestQueryLastedBlockHash(t *testing.T) {
-	res := app.QueryLatestBlockHash(node_url, "")
-	if res.Code == "error" {
-		t.Errorf("query error : %s", res.Msg)
-	} else {
-		js, _ := json.Marshal(res)
-		t.Logf("success~ blockhHash: %s", string(js))
-	}
-}
-
-func TestCheckBlockHash(t *testing.T) {
+func TestNodeProcessor_CheckBlockHash(t *testing.T) {
 	req := &kts.BlockHashCheckReq{
-		Hash:   "4A7FCE024C64061D28BEB91A3FC935465BE54B3B",
-		Height: 22102,
+		Hash:   "325D652724600F3748391C54AC9A1A9D1D5C671D",
+		Height: 33333,
 	}
-	res := app.CheckBlockHash(node_url, "", req)
-	if res.Code == "error" {
-		t.Errorf("check error : %s", res.Msg)
+
+	res, err := getProcessor().CheckBlockHash(req)
+	if err != nil {
+		t.Fatal(err)
 	} else {
-		t.Logf("success~ check result is %s", res.Data)
+		if !res.Success() {
+			t.Fatal(res.Msg)
+		} else {
+			_d, err := json.Marshal(res.Data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			t.Log(string(_d))
+		}
+	}
+}
+
+func TestNodeProcessor_RegisterAccount(t *testing.T) {
+	subKeys := make([]string, 0)
+
+	for i := 0; i < 5; i++ {
+		_, pubKey := app.GenPrivKeySecp256k1()
+		subKeys = append(subKeys, pubKey)
+	}
+
+	req, err := app.GenRegisterAccountReq(pri_key, subKeys)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	res, err := getProcessor().RegisterAccount(req)
+	if err != nil {
+		t.Fatal(err)
+	} else {
+		if !res.Success() {
+			t.Fatal(res.Msg)
+		}
+		t.Log("register success~")
 	}
 }
