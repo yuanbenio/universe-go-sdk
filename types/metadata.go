@@ -83,4 +83,5 @@ const (
 	VIDEO   MetadataType = "video"
 	PRIVATE MetadataType = "private"
 	CUSTOM  MetadataType = "custom"
+	FILE    MetadataType = "file"
 )

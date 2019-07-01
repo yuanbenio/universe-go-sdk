@@ -140,7 +140,7 @@ func FullMetadata(privateKey string, md *kts.Metadata) (err error) {
 				md.Abstract = strings.Join(_s, "")
 			}
 		}
-	case kts.IMAGE.Value(), kts.VIDEO.Value(), kts.AUDIO.Value():
+	case kts.IMAGE.Value(), kts.FILE.Value(), kts.VIDEO.Value(), kts.AUDIO.Value():
 		if md.Data == nil {
 			return ErrExtendDataNil
 		}
