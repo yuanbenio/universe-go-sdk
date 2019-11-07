@@ -5,13 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/yuanbenio/universe-go-sdk/utils/base36"
 	"io"
 	"io/ioutil"
-	"net"
 	"net/http"
-	"time"
-
-	"github.com/yuanbenio/universe-go-sdk/utils/base36"
 
 	kts "github.com/yuanbenio/universe-go-sdk/types"
 )
@@ -175,22 +172,6 @@ func (processor *NodeProcessor) RegisterAccount(req *kts.RegisterAccountReq) (re
 	return
 }
 
-func GetHttpClient() *http.Client {
-	return &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyFromEnvironment,
-			DialContext: (&net.Dialer{
-				Timeout:   30 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).DialContext,
-			MaxIdleConns:        100,
-			MaxIdleConnsPerHost: 20,
-			IdleConnTimeout:     20 * time.Second,
-		},
-		Timeout: 20 * time.Second,
-	}
-}
-
 func Request(method, url string, params []byte) (*http.Response, error) {
 	var body io.Reader
 	if params != nil {
@@ -201,7 +182,7 @@ func Request(method, url string, params []byte) (*http.Response, error) {
 		return nil, err
 	}
 	req.Header.Add("Content-Type", ContentType)
-	return GetHttpClient().Do(req)
+	return http.DefaultClient.Do(req)
 }
 
 //read response
