@@ -18,7 +18,21 @@ func GetPubKeyFrom(pubkey string) (*ecdsa.PublicKey, error) {
 	if d, err := hex.DecodeString(pubkey); err != nil {
 		return nil, err
 	} else {
-		return crypto.UnmarshalPubkey(d)
+		return crypto.DecompressPubkey(d)
+	}
+}
+
+// Address
+func Address(pubkey string) (string, error) {
+	if d, err := hex.DecodeString(pubkey); err != nil {
+		return "", err
+	} else {
+		pub, err := crypto.DecompressPubkey(d)
+		if err != nil {
+			return "", err
+		} else {
+			return crypto.PubkeyToAddress(*pub).String(), nil
+		}
 	}
 }
 
@@ -46,14 +60,17 @@ func Sign(hash, prv []byte) (sig []byte, err error) {
 }
 
 // VerifySignature
-func VerifySignature(hash []byte, signature []byte) bool {
-	pubkey, _ := crypto.Ecrecover(hash, signature)
-	return crypto.VerifySignature(pubkey, hash, signature)
+func VerifySignature(pubKey, hash []byte, signature []byte) bool {
+	signBs := signature
+	if len(signature) == 65 {
+		signBs = signature[:len(signature)-1]
+	}
+	return crypto.VerifySignature(pubKey, hash, signBs) // remove recovery id
 }
 
 // Hasher
-func Hasher(data ...[]byte) string {
-	return hex.EncodeToString(crypto.Keccak256(data...))
+func Keccak256(data ...[]byte) []byte {
+	return crypto.Keccak256(data...)
 }
 
 // GenerateDNA

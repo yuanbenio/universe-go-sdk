@@ -5,14 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	kts "github.com/yuanbenio/universe-go-sdk/types"
-	"github.com/yuanbenio/universe-go-sdk/utils/base36"
 	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
-	"strings"
 	"time"
+
+	"github.com/yuanbenio/universe-go-sdk/utils/base36"
+
+	kts "github.com/yuanbenio/universe-go-sdk/types"
 )
 
 var (
@@ -29,8 +30,7 @@ const (
 )
 
 const (
-	URIQueryMetadata    = "metadata/{dna}"
-	URISaveMetadata     = "metadata"
+	URIMetadata         = "metadata"
 	URIQueryLicense     = "queryLicense"
 	URIQueryLatestBlock = "block_hash"
 	URICheckBlock       = "check_block_hash"
@@ -61,7 +61,7 @@ func (processor *NodeProcessor) QueryMetadata(dna string) (res *kts.MetadataQuer
 		return nil, ErrDNAInvalid
 	}
 	var response *http.Response
-	response, err = Request(http.MethodGet, processor.getURIWithDNA(URIQueryMetadata, dna), nil)
+	response, err = Request(http.MethodGet, processor.getURIWithDNA(URIMetadata, dna), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (processor *NodeProcessor) SaveMetadata(md *kts.Metadata) (res *kts.Metadat
 	}
 
 	var response *http.Response
-	response, err = Request(http.MethodPost, processor.getURI(URISaveMetadata), _d)
+	response, err = Request(http.MethodPost, processor.getURI(URIMetadata), _d)
 	if err != nil {
 		return nil, err
 	}
@@ -219,6 +219,5 @@ func (processor *NodeProcessor) getURI(goroutine string) string {
 }
 
 func (processor *NodeProcessor) getURIWithDNA(goroutine string, dna string) string {
-	uri := fmt.Sprintf("%s/%s/%s", processor.url, processor.chainVersion, goroutine)
-	return strings.ReplaceAll(uri, "{dna}", dna)
+	return fmt.Sprintf("%s/%s/%s/%s", processor.url, processor.chainVersion, goroutine, dna)
 }

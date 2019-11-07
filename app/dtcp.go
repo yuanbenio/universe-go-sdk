@@ -33,7 +33,7 @@ const (
 //params: content
 //return: hexadecimal keccak(content)
 func GenContentHash(content string) string {
-	return uts.Hasher([]byte(content))
+	return hex.EncodeToString(uts.Keccak256([]byte(content)))
 }
 
 //GenMetadataSignature: calculation metadata.Signature
